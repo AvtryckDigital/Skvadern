@@ -6,10 +6,10 @@ export default function Evenemang() {
       {/* Hero */}
       <section className="relative h-64 flex items-center justify-center overflow-hidden">
         <Image
-          src="/images/samsittning-rymden-ypsilon-e1695761490430.jpg"
+          src="/images/patron_evenemang.jpg"
           alt="Evenemang"
           fill
-          className="object-cover object-center"
+          className="object-cover object-[50%_60%]" //justera första % för horisontell, andra % för vertikal
           priority
         />
         <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.55)" }} />
@@ -114,7 +114,7 @@ export default function Evenemang() {
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="relative h-64 overflow-hidden">
             <Image
-              src="/images/564240041_2865585950308615_2507079536529675438_n.jpg"
+              src="/images/samsittning-rymden-ypsilon-e1695761490430.jpg"
               alt="Samsittning"
               fill
               className="object-cover"
@@ -160,7 +160,7 @@ export default function Evenemang() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
             {[
               { icon: "🗺️", title: "Kulturresa", desc: "De bröder som arbetat hårt för föreningen, och kanhända framförallt under Skvaderdam, har möjlighet att få följa med på föreningens beryktade kulturresa." },
-              { icon: "🎙️", title: "Öfriga aktiviteter", desc: "En skvader är ett mångfacetterat djur som gillar att ägna sig åt alla typer av stimulerande aktiviteter." },
+              { icon: "🎙️", title: "Öfvriga aktiviteter", desc: "En skvader är ett mångfacetterat djur som gillar att ägna sig åt alla typer av stimulerande aktiviteter." },
             ].map((item) => (
               <div
                 key={item.title}

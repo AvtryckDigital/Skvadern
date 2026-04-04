@@ -26,7 +26,7 @@ export default function Home() {
               />
             </div>
           </div>
-          <p className="text-sm uppercase tracking-[0.3em] mb-4 text-gray-300">
+          <p className="text-sm uppercase tracking-[0.15em] mb-4 font-medium" style={{ color: "#C9A050", fontSize: 14 }}>
             Obesfvärad elegance sedan 1950
           </p>
           <h1
@@ -36,13 +36,7 @@ export default function Home() {
             Skvaderns<br />
             <em className="font-normal">herrförening</em>
           </h1>
-          <Link
-            href="/historia"
-            className="inline-flex items-center gap-2 px-8 py-3 text-sm uppercase tracking-widest font-medium transition-all duration-200 hover:gap-3"
-            style={{ backgroundColor: "white", color: "black" }}
-          >
-            Om oss <ChevronRight size={16} />
-          </Link>
+         
         </div>
       </section>
 

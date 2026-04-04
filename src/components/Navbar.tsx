@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/evenemang", label: "Evenemang" },
   { href: "/historia", label: "Historia" },
   { href: "/bilder", label: "Bilder" },
+  { href: "/kalender", label: "Kalender" },
 ];
 
 export default function Navbar() {
@@ -64,6 +65,16 @@ export default function Navbar() {
               </Link>
             );
           })}
+          <Link
+            href="/bli-en-skvader"
+            className="text-xs tracking-widest uppercase px-4 py-2 font-medium transition-all duration-200"
+            style={{
+              backgroundColor: pathname === "/bli-en-skvader" ? "var(--gold-light)" : "var(--gold)",
+              color: "var(--bg)",
+            }}
+          >
+            Bli en Skvader
+          </Link>
         </nav>
 
         {/* Mobile hamburger */}
@@ -94,6 +105,17 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          <Link
+            href="/bli-en-skvader"
+            onClick={() => setMenuOpen(false)}
+            className="block mt-3 py-3 px-4 text-xs tracking-widest uppercase text-center font-medium"
+            style={{
+              backgroundColor: "var(--gold)",
+              color: "var(--bg)",
+            }}
+          >
+            Bli en Skvader
+          </Link>
         </div>
       )}
     </header>

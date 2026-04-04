@@ -1,33 +1,160 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&family=Outfit:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
-:root {
-  --navy: #0f2340;
-  --navy-light: #1a3a5c;
-  --gold: #9a7d3a;
-  --gold-light: #b89550;
-  --bg: #ffffff;
-  --bg-subtle: #f7f7f7;
-  --border: #e5e5e5;
-  --text-dark: #111111;
-  --text-mid: #444444;
-  --text-light: #888888;
+/* ── Tailwind v4 custom theme tokens ────────────────────── */
+@theme {
+  --color-gold:           #C9A050;
+  --color-gold-muted:     #9A7840;
+  --color-surface:        #1C1814;
+  --color-bg-deep:        #12100E;
+  --color-parchment:      #F4ECE1;
+  --color-parchment-muted: #CFC4B4;
 }
 
+/* ── CSS variables — used by inline styles throughout ───── */
+:root {
+  /* Core palette */
+  --bg:          #12100E;
+  --bg-subtle:   #1C1814;
+  --surface:     #1C1814;
+  --gold:        #C9A050;
+  --gold-light:  #D4B06A;
+
+  /* Borders — thin gold at low opacity */
+  --border:      rgba(201, 160, 80, 0.22);
+
+  /* Typography */
+  --text-dark:   #F4ECE1;
+  --text-mid:    #CFC4B4;
+  --text-light:  #B0A494;
+
+  /* Legacy navy kept for any remaining references */
+  --navy:        #0f2340;
+  --navy-light:  #1a3a5c;
+
+  /* Shadows */
+  --shadow-gold: 0 0 20px rgba(201, 160, 80, 0.10);
+  --shadow-card: 0 4px 32px rgba(0, 0, 0, 0.55);
+}
+
+/* ── Reset ──────────────────────────────────────────────── */
 * {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Base ───────────────────────────────────────────────── */
 body {
   background-color: var(--bg);
   color: var(--text-dark);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.7;
 }
 
-h1, h2, h3, h4 {
-  font-family: 'Playfair Display', serif;
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', Georgia, serif;
+  letter-spacing: 0.01em;
 }
 
-html {
-  scroll-behavior: smooth;
+/* ── Noise / grain overlay ──────────────────────────────── */
+/*
+ * A fixed, pointer-events-free pseudo-element lays an SVG fractal-noise
+ * texture over the entire viewport at very low opacity, giving the
+ * background a subtle paper/parchment grain feel.
+ * Adjust opacity (0.03–0.06) to taste.
+ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* ── Dark surface: override Tailwind's bg-white ─────────── */
+/*
+ * Cards and blocks use the Tailwind utility class `bg-white`.
+ * We remap it to the dark mahogany surface colour so every
+ * card/panel automatically adopts the new theme without
+ * touching component markup.
+ */
+.bg-white {
+  background-color: var(--surface) !important;
+}
+
+/* ── Calm, deliberate transitions ───────────────────────── */
+a,
+button,
+[role="button"],
+input,
+select,
+textarea {
+  transition:
+    color          0.25s ease,
+    background-color 0.25s ease,
+    border-color   0.25s ease,
+    box-shadow     0.25s ease,
+    opacity        0.25s ease,
+    gap            0.25s ease;
+}
+
+/* ── Card hover — soft gold glow ────────────────────────── */
+.hover\:shadow-md:hover {
+  box-shadow: var(--shadow-gold), var(--shadow-card) !important;
+}
+
+/* ── Navigation link hover — gold border, not black ─────── */
+.hover\:border-black:hover {
+  border-color: var(--gold) !important;
+}
+
+/* ── Hero CTA button — invert to gold on dark bg ────────── */
+/*
+ * The hero button is hardcoded white/black in the component.
+ * We override here to match the premium palette.
+ */
+a[style*="background-color: white"],
+a[style*="backgroundColor: white"] {
+  background-color: transparent !important;
+  color: var(--gold) !important;
+  border: 1px solid var(--gold) !important;
+  letter-spacing: 0.12em;
+}
+
+a[style*="background-color: white"]:hover,
+a[style*="backgroundColor: white"]:hover {
+  background-color: var(--gold) !important;
+  color: var(--bg) !important;
+}
+
+/* ── Historia section CTA button ────────────────────────── */
+a[style*="borderColor: var(--text-dark)"],
+a[style*="border-color: var(--text-dark)"] {
+  border-color: var(--gold) !important;
+  color: var(--gold) !important;
+}
+
+a[style*="borderColor: var(--text-dark)"]:hover,
+a[style*="border-color: var(--text-dark)"]:hover {
+  background-color: var(--gold) !important;
+  color: var(--bg) !important;
+}
+
+/* ── Divider / hr ───────────────────────────────────────── */
+hr {
+  border-color: var(--border);
+}
+
+/* ── Admin — outline button hover ──────────────────────── */
+.btn-outline:hover {
+  border-color: var(--gold) !important;
+  color: var(--gold) !important;
 }

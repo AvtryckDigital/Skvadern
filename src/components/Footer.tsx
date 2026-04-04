@@ -68,8 +68,8 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-2">
                 <Mail size={15} className="mt-0.5 flex-shrink-0" style={{ color: "var(--gold)" }} />
-                <a href="mailto:info@skvadern.net" className="hover:text-black transition-colors">
-                  info@skvadern.net
+                <a href="mailto:patron@skvadern.net" className="hover:text-black transition-colors">
+                  patron@skvadern.net
                 </a>
               </li>
             </ul>

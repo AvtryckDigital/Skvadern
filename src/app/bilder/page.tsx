@@ -1,6 +1,8 @@
 import Image from "next/image";
+import { createClient } from "@/lib/supabase/server";
+import type { GalleryImage } from "@/lib/supabase/types";
 
-const gallery = [
+const staticGallery = [
   { src: "/images/564734785_2865585923641951_6803562775840569346_n.jpg", alt: "Skvaderspel", caption: "Skvaderspel" },
   { src: "/images/565192044_2865585700308640_353422530656248580_n.jpg", alt: "Skvaderspel", caption: "Skvaderspel" },
   { src: "/images/565664227_2865585790308631_1230713063261803056_n.jpg", alt: "Skvaderspel", caption: "Skvaderspel" },
@@ -12,7 +14,13 @@ const jubilee = [
   { src: "/images/564240041_2865585950308615_2507079536529675438_n.jpg", alt: "75-årsjubileum 2025", caption: "75-årsjubileum 2025" },
 ];
 
-export default function Bilder() {
+export default async function Bilder() {
+  const supabase = await createClient();
+  const { data: dynamicImages } = await supabase
+    .from("gallery_images")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .returns<GalleryImage[]>();
   return (
     <div style={{ backgroundColor: "var(--bg)" }}>
       {/* Hero */}
@@ -60,7 +68,7 @@ export default function Bilder() {
           </div>
 
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-            {gallery.map((img, i) => (
+            {staticGallery.map((img, i) => (
               <div
                 key={i}
                 className="break-inside-avoid group relative overflow-hidden"
@@ -78,6 +86,28 @@ export default function Bilder() {
                 >
                   <p className="text-xs text-white">{img.caption}</p>
                 </div>
+              </div>
+            ))}
+            {dynamicImages?.map((img) => (
+              <div
+                key={img.id}
+                className="break-inside-avoid group relative overflow-hidden"
+              >
+                <Image
+                  src={img.url}
+                  alt={img.caption ?? "Föreningsbild"}
+                  width={600}
+                  height={400}
+                  className="w-full h-auto object-cover transition-opacity duration-300 group-hover:opacity-90"
+                />
+                {img.caption && (
+                  <div
+                    className="absolute inset-x-0 bottom-0 py-2 px-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)" }}
+                  >
+                    <p className="text-xs text-white">{img.caption}</p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
