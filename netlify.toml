@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[processing]
+  [processing.html]
+    pretty_urls = false
