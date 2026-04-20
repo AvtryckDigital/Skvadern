@@ -1,4 +1,29 @@
+"use client";
+
+import { useState, type FormEvent } from "react";
+
 export default function BliEnSkvader() {
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("sending");
+    const form = e.currentTarget;
+    const body = new URLSearchParams(new FormData(form) as never);
+    body.append("form-name", "bli-skvader");
+
+    try {
+      const res = await fetch("/netlify-forms.html", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body.toString(),
+      });
+      setStatus(res.ok ? "sent" : "error");
+    } catch {
+      setStatus("error");
+    }
+  }
+
   return (
     <div style={{ backgroundColor: "var(--bg)" }}>
       {/* Header */}
@@ -105,13 +130,27 @@ export default function BliEnSkvader() {
           </h2>
           <div className="w-10 h-px mb-8" style={{ backgroundColor: "var(--gold)" }} />
 
+          {status === "sent" ? (
+            <div
+              className="p-8 border text-center"
+              style={{ borderColor: "var(--gold)", backgroundColor: "var(--bg-subtle)" }}
+            >
+              <p
+                className="text-xl font-semibold mb-2"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                Tack för ditt meddelande
+              </p>
+              <p className="text-sm" style={{ color: "var(--text-mid)" }}>
+                Vi återkommer snart till dig.
+              </p>
+            </div>
+          ) : (
           <form
             name="bli-skvader"
-            method="POST"
-            data-netlify="true"
+            onSubmit={handleSubmit}
             className="flex flex-col gap-5"
           >
-            <input type="hidden" name="form-name" value="bli-skvader" />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="flex flex-col gap-1.5">
@@ -185,19 +224,27 @@ export default function BliEnSkvader() {
               />
             </div>
 
+            {status === "error" && (
+              <p className="text-sm" style={{ color: "#c44" }}>
+                Något gick fel. Försök igen eller kontakta oss direkt.
+              </p>
+            )}
+
             <div>
               <button
                 type="submit"
-                className="px-8 py-3 text-sm uppercase tracking-widest font-medium transition-all duration-200 cursor-pointer"
+                disabled={status === "sending"}
+                className="px-8 py-3 text-sm uppercase tracking-widest font-medium transition-all duration-200 cursor-pointer disabled:opacity-50"
                 style={{
                   backgroundColor: "var(--gold)",
                   color: "var(--bg)",
                 }}
               >
-                Skicka meddelande
+                {status === "sending" ? "Skickar..." : "Skicka meddelande"}
               </button>
             </div>
           </form>
+          )}
         </div>
       </section>
     </div>
