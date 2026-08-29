@@ -50,6 +50,22 @@ const jubilee = [
 
 export default async function Bilder() {
   const dynamicImages = await getGalleryImages();
+
+  // Gruppera dynamiska bilder efter kategori
+  const groupedImages = dynamicImages.reduce((acc, img) => {
+    const cat = img.category && img.category.trim() !== "" ? img.category : "Övrigt";
+    if (!acc[cat]) acc[cat] = [];
+    acc[cat].push(img);
+    return acc;
+  }, {} as Record<string, GalleryImage[]>);
+
+  // Vi kan sortera kategorierna så "Övrigt" hamnar sist (om man vill)
+  const categories = Object.keys(groupedImages).sort((a, b) => {
+    if (a === "Övrigt") return 1;
+    if (b === "Övrigt") return -1;
+    return a.localeCompare(b);
+  });
+
   return (
     <div style={{ backgroundColor: "var(--bg)" }}>
       {/* Hero */}
@@ -81,7 +97,48 @@ export default async function Bilder() {
         </div>
       </section>
 
-      {/* Galleri */}
+      {/* --- AUTOMATISKA KATEGORIER FRÅN SUPABASE --- */}
+      {categories.map((category) => (
+        <section key={category} className="py-16 px-6 border-b" style={{ borderColor: "var(--border)" }}>
+          <div className="max-w-6xl mx-auto">
+            <div className="mb-10">
+              <p className="text-xs uppercase tracking-[0.3em] mb-2" style={{ color: "var(--gold)" }}>
+                Galleri
+              </p>
+              <h2
+                className="text-3xl font-bold"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                {category}
+              </h2>
+            </div>
+            
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+              {groupedImages[category].map((img) => (
+                <div key={img.id} className="break-inside-avoid group relative overflow-hidden">
+                  <Image
+                    src={img.url}
+                    alt={img.caption ?? category}
+                    width={600}
+                    height={400}
+                    className="w-full h-auto object-cover transition-opacity duration-300 group-hover:opacity-90"
+                  />
+                  {img.caption && (
+                    <div
+                      className="absolute inset-x-0 bottom-0 py-2 px-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)" }}
+                    >
+                      <p className="text-xs text-white">{img.caption}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ))}
+
+      {/* --- GAMLA/BEFINTLIGA BILDER (Föreningens stunder) --- */}
       <section className="py-16 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="mb-10">
@@ -115,28 +172,6 @@ export default async function Bilder() {
                 >
                   <p className="text-xs text-white">{img.caption}</p>
                 </div>
-              </div>
-            ))}
-            {dynamicImages?.map((img) => (
-              <div
-                key={img.id}
-                className="break-inside-avoid group relative overflow-hidden"
-              >
-                <Image
-                  src={img.url}
-                  alt={img.caption ?? "Föreningsbild"}
-                  width={600}
-                  height={400}
-                  className="w-full h-auto object-cover transition-opacity duration-300 group-hover:opacity-90"
-                />
-                {img.caption && (
-                  <div
-                    className="absolute inset-x-0 bottom-0 py-2 px-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)" }}
-                  >
-                    <p className="text-xs text-white">{img.caption}</p>
-                  </div>
-                )}
               </div>
             ))}
           </div>

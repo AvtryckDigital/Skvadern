@@ -2,6 +2,7 @@ import { unstable_cache } from "next/cache";
 import { createPublicClient } from "@/lib/supabase/public";
 import { CalendarDays, Clock, Tag, MapPin, FileText } from "lucide-react";
 import type { Activity } from "@/lib/supabase/types";
+import { SubscribeButtons } from "@/components/SubscribeButtons";
 
 const getActivities = unstable_cache(
   async () => {
@@ -25,11 +26,16 @@ function formatDate(iso: string) {
   });
 }
 
-function formatTime(iso: string) {
-  return new Date(iso).toLocaleTimeString("sv-SE", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+function formatAcademicTime(iso: string) {
+  const date = new Date(iso);
+  const hours = date.toLocaleTimeString("sv-SE", { hour: "2-digit" });
+  const minutes = date.getMinutes();
+  
+  if (minutes === 15) return `${hours} ak`;
+  if (minutes === 30) return `${hours} dk`;
+  if (minutes === 45) return `${hours} tk`;
+  
+  return date.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
 }
 
 export default async function Kalender() {
@@ -61,6 +67,7 @@ export default async function Kalender() {
               plats i kalendern.
             </em>
           </p>
+          <SubscribeButtons />
         </div>
       </section>
 
@@ -145,7 +152,7 @@ export default async function Kalender() {
                 />
 
                 {/* Tid */}
-                <div className="flex items-center gap-3 sm:w-16 flex-shrink-0">
+                <div className="flex items-center gap-3 sm:w-28 flex-shrink-0">
                   <Clock
                     size={16}
                     style={{ color: "var(--gold)" }}
@@ -163,12 +170,10 @@ export default async function Kalender() {
                       style={{
                         fontFamily: "'Playfair Display', serif",
                         color: "var(--text-dark)",
-                        
                       }}
                     >
-                      {formatTime(event.date)}
-
-                      
+                      {formatAcademicTime(event.date)}
+                      {event.end_date && ` - ${formatAcademicTime(event.end_date)}`}
                     </div>
                   </div>
                 </div>

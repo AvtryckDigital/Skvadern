@@ -13,6 +13,7 @@ export async function uploadImage(
 
   const file = formData.get("image") as File;
   const caption = (formData.get("caption") as string) || null;
+  const category = (formData.get("category") as string) || null;
 
   if (!file || file.size === 0) return { error: "Ingen fil vald." };
 
@@ -31,7 +32,7 @@ export async function uploadImage(
 
   const { error: dbError } = await supabase
     .from("gallery_images")
-    .insert({ url: publicUrl, caption });
+    .insert({ url: publicUrl, caption, category });
 
   if (dbError) return { error: dbError.message };
 

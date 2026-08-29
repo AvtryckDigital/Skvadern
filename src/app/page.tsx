@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight, CalendarDays, BookOpen, Camera } from "lucide-react";
+import { ChevronRight, CalendarDays, BookOpen, Camera, Scale } from "lucide-react";
 
 export default function Home() {
   return (
@@ -60,25 +60,31 @@ export default function Home() {
               <em>Vältalig, välklädd, ödmjuk &mdash; hur spenderar en Skvader sin tid på nationen?</em>
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6" >
             {[
               {
                 img: "/images/skvaderspel.jpg",
                 title: "SkvaderSpel",
                 desc: "Essensen av en Skvaders engagemang. En praktfull bankett följd utav ett teatralt möte och oral kraftmätning mellan bröderna.",
                 href: "/evenemang",
+                imgPosition: "center", // Ändra till t.ex. "top", "bottom" eller "center 20%"
+                imgScale: 1.7,           // Ändra till 1.1, 1.2 etc. för att zooma in
               },
               {
-                img: "/images/samsittning-rymden-ypsilon-e1695761490430.jpg",
+                img: "/images/samsittning.jpg",
                 title: "Samsittningar",
                 desc: "En Skvader trivs bäst i gott sällskap. Med utsökt mat och dryck avnjuter vi ofta kvällstimmarna tillsammans med de andra sociala föreningarna på nationen.",
                 href: "/evenemang#samsittningar",
+                imgPosition: "center",
+                imgScale: 1.3,
               },
               {
                 img: "/images/119641543_368949447606126_586421981276314901_n.jpg",
                 title: "Öfvriga tillställningar",
                 desc: "En skvader är ett mångfacetterat djur som gillar att ägna sig åt alla typer av stimulerande aktiviteter.",
                 href: "/evenemang#ofvriga",
+                imgPosition: "center",
+                imgScale: 1,
               },
             ].map((item) => (
               <Link
@@ -87,11 +93,17 @@ export default function Home() {
                 className="group bg-white border transition-shadow duration-200 hover:shadow-md overflow-hidden block"
                 style={{ borderColor: "var(--border)", borderTop: "2px solid var(--gold)" }}
               >
-                <img
-                  src={item.img}
-                  alt={item.title}
-                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-                />
+                <div className="w-full h-48 overflow-hidden">
+                  <img
+                    src={item.img}
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    style={{ 
+                      objectPosition: item.imgPosition,
+                      transform: `scale(${item.imgScale})`
+                    }}
+                  />
+                </div>
                 <div className="p-8">
                   <h3
                     className="text-xl font-semibold mb-2"
@@ -180,19 +192,25 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
-                quote: "Patron är otroligt god, han kommer alltid inneha mitt fulla stöd.",
-                name: "Broder bas",
-                img: "/images/ladda-ned.jpg",
+                quote: "Jag ser till att böckerna förvaras korrekt på kammaren. Jag tackar Patron för hans förtroende",
+                name: "Broder Bokhållare",
+                img: "/images/profil/1.jpg",
+                imgPosition: "50% 20%",
+                imgScale: 2.4,
               },
               {
                 quote: "Patron har upplyst mig, och jag har aldrig mått bättre.",
-                name: "Broder prickare",
-                img: "/images/Skarmbild-2025-11-19-165440.jpg",
+                name: "Broder Stämplare",
+                img: "/images/profil/2.jpg",
+                imgPosition: "top",
+                imgScale: 1,
               },
               {
-                quote: "Jag försöker så gott jag kan, jag tackar Patron för hans tålamod.",
-                name: "Broder nitare",
-                img: "/images/c60d50f8-9762-427e-b5ac-a92b17076746.jpg",
+                quote: "Jag försöker så gott jag kan och tackar Patron för hans utomordentliga tålamod.",
+                name: "Broder Samlare",
+                img: "/images/profil/3.jpg",
+                imgPosition: "",
+                imgScale: 1,
               },
             ].map((item) => (
               <div
@@ -201,11 +219,17 @@ export default function Home() {
                 style={{ borderColor: "var(--border)" }}
               >
                 <div className="flex items-center gap-4 mb-5">
-                  <img
-                    src={item.img}
-                    alt={item.name}
-                    className="w-20 h-20 rounded-full object-cover object-top flex-shrink-0"
-                  />
+                  <div className="w-20 h-20 rounded-full overflow-hidden flex-shrink-0">
+                    <img
+                      src={item.img}
+                      alt={item.name}
+                      className="w-full h-full object-cover"
+                      style={{
+                        objectPosition: item.imgPosition,
+                        transform: `scale(${item.imgScale})`
+                      }}
+                    />
+                  </div>
                   <p className="text-sm font-medium tracking-wide" style={{ color: "var(--text-dark)" }}>
                     {item.name}
                   </p>

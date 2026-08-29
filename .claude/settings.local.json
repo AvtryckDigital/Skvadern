@@ -3,7 +3,16 @@
     "allow": [
       "Bash(node:*)",
       "Bash(npm install:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npx next:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)",
+      "Bash(xargs -0 git add)",
+      "Bash(git push:*)",
+      "Bash(git remote:*)",
+      "Bash(gh api:*)",
+      "Bash(npm view:*)",
+      "Bash(python3 -c \"import sys,json; vs=[v for v in json.load\\(sys.stdin\\) if v.startswith\\('16.2.'\\)]; print\\(vs[-1] if vs else 'none'\\)\")"
     ]
   }
 }

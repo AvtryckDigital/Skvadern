@@ -93,7 +93,30 @@ export function GalleryUploadForm() {
             id="caption"
             name="caption"
             type="text"
-            placeholder="t.ex. SkvaderSpel 2026"
+            placeholder="t.ex. Glada skvadrar"
+            className="px-4 py-3 text-sm border bg-transparent outline-none"
+            style={{
+              borderColor: "var(--border)",
+              color: "var(--text-dark)",
+              backgroundColor: "var(--bg)",
+            }}
+          />
+        </div>
+
+        {/* Category */}
+        <div className="flex flex-col gap-1.5 sm:col-span-2">
+          <label
+            htmlFor="category"
+            className="text-xs uppercase tracking-widest"
+            style={{ color: "var(--text-light)" }}
+          >
+            Kategori (Valfritt)
+          </label>
+          <input
+            id="category"
+            name="category"
+            type="text"
+            placeholder="t.ex. Julspel eller Spel 2026"
             className="px-4 py-3 text-sm border bg-transparent outline-none"
             style={{
               borderColor: "var(--border)",
