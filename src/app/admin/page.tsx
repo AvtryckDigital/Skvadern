@@ -5,6 +5,7 @@ import { deleteImage } from "./gallery-actions";
 import { logout } from "@/app/login/actions";
 import { Trash2 } from "lucide-react";
 import { GalleryUploadForm } from "./GalleryUploadForm";
+import { ActivityItem } from "./ActivityItem";
 import type { Activity, GalleryImage } from "@/lib/supabase/types";
 
 function formatDateTime(iso: string) {
@@ -124,13 +125,34 @@ export default async function AdminPage() {
                   className="text-xs uppercase tracking-widest"
                   style={{ color: "var(--text-light)" }}
                 >
-                  Datum &amp; tid *
+                  Starttid *
                 </label>
                 <input
                   id="date"
                   name="date"
                   type="datetime-local"
                   required
+                  className="px-4 py-3 text-sm border bg-transparent outline-none"
+                  style={{
+                    borderColor: "var(--border)",
+                    color: "var(--text-dark)",
+                    backgroundColor: "var(--bg)",
+                    colorScheme: "dark",
+                  }}
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label
+                  htmlFor="end_date"
+                  className="text-xs uppercase tracking-widest"
+                  style={{ color: "var(--text-light)" }}
+                >
+                  Sluttid (valfritt)
+                </label>
+                <input
+                  id="end_date"
+                  name="end_date"
+                  type="datetime-local"
                   className="px-4 py-3 text-sm border bg-transparent outline-none"
                   style={{
                     borderColor: "var(--border)",
@@ -226,58 +248,9 @@ export default async function AdminPage() {
             </p>
           ) : (
             <div className="flex flex-col gap-3">
-              {activities.map((activity) => {
-                const { date, time } = formatDateTime(activity.date);
-                const deleteWithId = deleteActivity.bind(null, activity.id);
-                return (
-                  <div
-                    key={activity.id}
-                    className="flex items-center gap-4 px-5 py-4 border"
-                    style={{
-                      borderColor: "var(--border)",
-                      borderLeft: "3px solid var(--gold)",
-                      backgroundColor: "var(--bg-subtle)",
-                    }}
-                  >
-                    <div className="flex-1 min-w-0">
-                      <div
-                        className="font-semibold text-sm"
-                        style={{
-                          fontFamily: "'Playfair Display', serif",
-                          color: "var(--text-dark)",
-                        }}
-                      >
-                        {activity.title}
-                      </div>
-                      <div
-                        className="text-xs mt-0.5"
-                        style={{ color: "var(--text-light)" }}
-                      >
-                        {date} · {time}
-                        {activity.location && ` · ${activity.location}`}
-                      </div>
-                      {activity.description && (
-                        <div
-                          className="text-xs mt-1 italic"
-                          style={{ color: "var(--text-light)" }}
-                        >
-                          {activity.description}
-                        </div>
-                      )}
-                    </div>
-                    <form action={deleteWithId} className="flex-shrink-0">
-                      <button
-                        type="submit"
-                        aria-label={`Ta bort ${activity.title}`}
-                        className="p-2 rounded transition-all duration-200 hover:text-red-400 hover:bg-red-400/10"
-                        style={{ color: "var(--text-light)" }}
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </form>
-                  </div>
-                );
-              })}
+              {activities.map((activity) => (
+                <ActivityItem key={activity.id} activity={activity} />
+              ))}
             </div>
           )}
         </section>

@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { createPublicClient } from "@/lib/supabase/public";
 import type { Activity } from "@/lib/supabase/types";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
   const supabase = createPublicClient();
   const { data: activities } = await supabase
@@ -27,19 +30,28 @@ export async function GET() {
     "X-WR-TIMEZONE:Europe/Stockholm",
     "REFRESH-INTERVAL;VALUE=DURATION:PT12H",
     ...activities.flatMap((event) => {
-      const startDateStr = formatIcsDate(event.date);
-      let endDateStr = "";
+      // Försök parsa datumet, hoppa över om det är ogiltigt
+      const start = new Date(event.date);
+      if (isNaN(start.getTime())) return []; // Hoppa över event med trasigt datum
+
+      let end = new Date(start.getTime() + 2 * 60 * 60 * 1000); // Default 2 timmar
       if (event.end_date) {
-        endDateStr = formatIcsDate(event.end_date);
-      } else {
-        const endDate = new Date(new Date(event.date).getTime() + 2 * 60 * 60 * 1000);
-        endDateStr = formatIcsDate(endDate.toISOString());
+        const parsedEnd = new Date(event.end_date);
+        if (!isNaN(parsedEnd.getTime())) {
+          end = parsedEnd;
+        }
       }
+
+      const formatIcs = (d: Date) => d.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+
+      const startDateStr = formatIcs(start);
+      const endDateStr = formatIcs(end);
+      const nowStr = formatIcs(new Date());
 
       return [
         "BEGIN:VEVENT",
         `UID:${event.id}@skvadern.se`,
-        `DTSTAMP:${formatIcsDate(new Date().toISOString())}`,
+        `DTSTAMP:${nowStr}`,
         `DTSTART:${startDateStr}`,
         `DTEND:${endDateStr}`,
         `SUMMARY:${event.title || ""}`,
