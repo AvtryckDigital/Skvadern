@@ -173,7 +173,6 @@ export default async function Kalender() {
                       }}
                     >
                       {formatAcademicTime(event.date)}
-                      {event.end_date && ` - ${formatAcademicTime(event.end_date)}`}
                     </div>
                   </div>
                 </div>
