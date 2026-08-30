@@ -6,22 +6,22 @@ import { ImagePlus } from "lucide-react";
 
 export function GalleryUploadForm() {
   const [state, action, pending] = useActionState(uploadImage, null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [previews, setPreviews] = useState<string[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
 
   // Reset form and preview after successful upload
   useEffect(() => {
-    if (state === null && !pending && preview) {
+    if (state === null && !pending && previews.length > 0) {
       // null state + no pending = successful submit
     }
-  }, [state, pending, preview]);
+  }, [state, pending, previews]);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      setPreviews(files.map(file => URL.createObjectURL(file)));
     } else {
-      setPreview(null);
+      setPreviews([]);
     }
   }
 
@@ -30,7 +30,7 @@ export function GalleryUploadForm() {
   const prevPending = useRef(false);
   useEffect(() => {
     if (prevPending.current && !pending && !state?.error) {
-      setPreview(null);
+      setPreviews([]);
       setUploadKey((k) => k + 1);
     }
     prevPending.current = pending;
@@ -67,13 +67,14 @@ export function GalleryUploadForm() {
             }}
           >
             <ImagePlus size={16} style={{ color: "var(--gold)" }} />
-            <span>{preview ? "Byt bild…" : "Välj bild…"}</span>
+            <span>{previews.length > 0 ? `${previews.length} bilder valda…` : "Välj bilder…"}</span>
           </label>
           <input
             id="image"
             name="image"
             type="file"
             accept="image/*"
+            multiple
             required
             className="sr-only"
             onChange={handleFileChange}
@@ -127,15 +128,19 @@ export function GalleryUploadForm() {
         </div>
       </div>
 
-      {/* Preview */}
-      {preview && (
-        <div className="relative w-40 h-28 overflow-hidden border" style={{ borderColor: "var(--border)" }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={preview}
-            alt="Förhandsvisning"
-            className="w-full h-full object-cover"
-          />
+      {/* Previews */}
+      {previews.length > 0 && (
+        <div className="flex flex-wrap gap-4">
+          {previews.map((preview, i) => (
+            <div key={i} className="relative w-40 h-28 overflow-hidden border" style={{ borderColor: "var(--border)" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={preview}
+                alt={`Förhandsvisning ${i + 1}`}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
         </div>
       )}
 

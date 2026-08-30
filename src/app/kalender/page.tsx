@@ -15,7 +15,7 @@ const getActivities = unstable_cache(
     return data ?? [];
   },
   ["activities"],
-  { revalidate: 60, tags: ["activities"] }
+  { tags: ["activities"] }
 );
 
 function formatDate(iso: string) {

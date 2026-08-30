@@ -8,20 +8,6 @@ import { GalleryUploadForm } from "./GalleryUploadForm";
 import { ActivityItem } from "./ActivityItem";
 import type { Activity, GalleryImage } from "@/lib/supabase/types";
 
-function formatDateTime(iso: string) {
-  const d = new Date(iso);
-  const date = d.toLocaleDateString("sv-SE", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-  const time = d.toLocaleTimeString("sv-SE", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-  return { date, time };
-}
-
 export default async function AdminPage() {
   const supabase = await createClient();
 

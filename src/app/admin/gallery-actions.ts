@@ -11,32 +11,42 @@ export async function uploadImage(
 ): Promise<{ error: string } | null> {
   const supabase = await createClient();
 
-  const file = formData.get("image") as File;
+  const files = formData.getAll("image") as File[];
   const caption = (formData.get("caption") as string) || null;
   const category = (formData.get("category") as string) || null;
 
-  if (!file || file.size === 0) return { error: "Ingen fil vald." };
+  if (!files || files.length === 0) return { error: "Ingen fil vald." };
 
-  const ext = file.name.split(".").pop();
-  const filename = `${Date.now()}.${ext}`;
+  const validFiles = files.filter(f => f.size > 0);
+  if (validFiles.length === 0) return { error: "Ingen giltig fil vald." };
 
-  const { data: uploadData, error: uploadError } = await supabase.storage
-    .from(BUCKET)
-    .upload(filename, file, { contentType: file.type });
+  const insertData = [];
 
-  if (uploadError) return { error: uploadError.message };
+  for (const file of validFiles) {
+    const ext = file.name.split(".").pop();
+    // Use a random string plus timestamp to prevent collisions when uploading simultaneously
+    const filename = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${ext}`;
 
-  const {
-    data: { publicUrl },
-  } = supabase.storage.from(BUCKET).getPublicUrl(uploadData.path);
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from(BUCKET)
+      .upload(filename, file, { contentType: file.type });
+
+    if (uploadError) return { error: uploadError.message };
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from(BUCKET).getPublicUrl(uploadData.path);
+
+    insertData.push({ url: publicUrl, caption, category });
+  }
 
   const { error: dbError } = await supabase
     .from("gallery_images")
-    .insert({ url: publicUrl, caption, category });
+    .insert(insertData);
 
   if (dbError) return { error: dbError.message };
 
-  revalidateTag("gallery", "max");
+  revalidateTag("gallery");
   revalidatePath("/admin");
   return null;
 }
@@ -61,6 +71,6 @@ export async function deleteImage(id: string, _formData: FormData) {
 
   await supabase.from("gallery_images").delete().eq("id", id);
 
-  revalidateTag("gallery", "max");
+  revalidateTag("gallery");
   revalidatePath("/admin");
 }
