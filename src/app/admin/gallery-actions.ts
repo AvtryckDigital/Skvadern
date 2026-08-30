@@ -74,3 +74,33 @@ export async function deleteImage(id: string, _formData: FormData) {
   revalidateTag("gallery", "max");
   revalidatePath("/admin");
 }
+
+export async function updateCategoryOrder(orderedCleanCategories: string[]) {
+  const supabase = await createClient();
+
+  const { data: allImages } = await supabase.from("gallery_images").select("id, category");
+  if (!allImages) return;
+
+  for (const img of allImages) {
+    if (!img.category) continue;
+    const cleanCat = img.category.replace(/^\d+\.\s*/, '');
+    const index = orderedCleanCategories.indexOf(cleanCat);
+    
+    let newCatName = cleanCat;
+    if (index !== -1) {
+      newCatName = `${index + 1}. ${cleanCat}`;
+    }
+
+    if (img.category !== newCatName) {
+      const { error } = await supabase.from("gallery_images").update({ category: newCatName }).eq("id", img.id);
+      if (error) {
+        console.error("Failed to update category order:", error);
+        throw new Error(error.message);
+      }
+    }
+  }
+
+  revalidateTag("gallery", "max");
+  revalidatePath("/admin");
+  revalidatePath("/bilder");
+}

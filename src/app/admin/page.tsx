@@ -8,6 +8,8 @@ import { GalleryUploadForm } from "./GalleryUploadForm";
 import { ActivityItem } from "./ActivityItem";
 import type { Activity, GalleryImage } from "@/lib/supabase/types";
 
+import { CategorySorter } from "./CategorySorter";
+
 export default async function AdminPage() {
   const supabase = await createClient();
 
@@ -28,6 +30,35 @@ export default async function AdminPage() {
     .select("*")
     .order("created_at", { ascending: false })
     .returns<GalleryImage[]>();
+
+  const groupedImages = (images || []).reduce((acc, img) => {
+    const cat = img.category && img.category.trim() !== "" ? img.category : "Övrigt";
+    if (!acc[cat]) acc[cat] = [];
+    acc[cat].push(img);
+    return acc;
+  }, {} as Record<string, GalleryImage[]>);
+
+  const categories = Object.keys(groupedImages).sort((a, b) => {
+    const cleanA = a.replace(/^\d+\.\s*/, '');
+    const cleanB = b.replace(/^\d+\.\s*/, '');
+    
+    if (cleanA === "Övrigt") return 1;
+    if (cleanB === "Övrigt") return -1;
+
+    const matchA = a.match(/^(\d+)\./);
+    const matchB = b.match(/^(\d+)\./);
+    const numA = matchA ? parseInt(matchA[1], 10) : 9999;
+    const numB = matchB ? parseInt(matchB[1], 10) : 9999;
+    
+    if (numA !== numB) {
+      return numA - numB;
+    }
+    return cleanA.localeCompare(cleanB);
+  });
+
+  const cleanCategories = categories
+    .map(c => c.replace(/^\d+\.\s*/, ''))
+    .filter(c => c !== "Övrigt");
 
   return (
     <div style={{ backgroundColor: "var(--bg)", minHeight: "calc(100vh - 80px)" }}>
@@ -282,6 +313,8 @@ export default async function AdminPage() {
             Föreningens stunder
           </h2>
 
+          <CategorySorter initialCategories={cleanCategories} />
+
           <GalleryUploadForm />
 
           {/* Uploaded images list */}
@@ -301,46 +334,61 @@ export default async function AdminPage() {
                 Inga bilder uppladdade ännu.
               </p>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                {images.map((image) => {
-                  const deleteWithId = deleteImage.bind(null, image.id);
+              <div className="flex flex-col gap-10">
+                {categories.map((category) => {
+                  const cleanCategory = category.replace(/^\d+\.\s*/, '');
                   return (
-                    <div
-                      key={image.id}
-                      className="group relative border overflow-hidden"
-                      style={{ borderColor: "var(--border)" }}
+                  <div key={category}>
+                    <h4 
+                      className="text-lg font-semibold mb-4" 
+                      style={{ color: "var(--text-dark)", fontFamily: "'Playfair Display', serif" }}
                     >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={image.url}
-                        alt={image.caption ?? ""}
-                        className="w-full h-28 object-cover"
-                      />
-                      {image.caption && (
-                        <p
-                          className="px-2 py-1.5 text-xs truncate"
-                          style={{ color: "var(--text-light)" }}
-                        >
-                          {image.caption}
-                        </p>
-                      )}
-                      <form
-                        action={deleteWithId}
-                        className="absolute top-1.5 right-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                      >
-                        <button
-                          type="submit"
-                          aria-label="Ta bort bild"
-                          className="p-1.5 rounded transition-all duration-200 hover:text-red-400 hover:bg-red-400/10"
-                          style={{
-                            color: "white",
-                            backgroundColor: "rgba(0,0,0,0.55)",
-                          }}
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      </form>
+                      {cleanCategory}
+                    </h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                      {groupedImages[category].map((image) => {
+                        const deleteWithId = deleteImage.bind(null, image.id);
+                        return (
+                          <div
+                            key={image.id}
+                            className="group relative border overflow-hidden"
+                            style={{ borderColor: "var(--border)" }}
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={image.url}
+                              alt={image.caption ?? ""}
+                              className="w-full h-28 object-cover"
+                            />
+                            {image.caption && (
+                              <p
+                                className="px-2 py-1.5 text-xs truncate"
+                                style={{ color: "var(--text-light)" }}
+                              >
+                                {image.caption}
+                              </p>
+                            )}
+                            <form
+                              action={deleteWithId}
+                              className="absolute top-1.5 right-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                            >
+                              <button
+                                type="submit"
+                                aria-label="Ta bort bild"
+                                className="p-1.5 rounded transition-all duration-200 hover:text-red-400 hover:bg-red-400/10"
+                                style={{
+                                  color: "white",
+                                  backgroundColor: "rgba(0,0,0,0.55)",
+                                }}
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </form>
+                          </div>
+                        );
+                      })}
                     </div>
+                  </div>
                   );
                 })}
               </div>

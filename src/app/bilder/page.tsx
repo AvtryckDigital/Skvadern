@@ -32,9 +32,21 @@ export default async function Bilder() {
 
   // Vi kan sortera kategorierna så "Övrigt" hamnar sist (om man vill)
   const categories = Object.keys(groupedImages).sort((a, b) => {
-    if (a === "Övrigt") return 1;
-    if (b === "Övrigt") return -1;
-    return a.localeCompare(b);
+    const cleanA = a.replace(/^\d+\.\s*/, '');
+    const cleanB = b.replace(/^\d+\.\s*/, '');
+
+    if (cleanA === "Övrigt") return 1;
+    if (cleanB === "Övrigt") return -1;
+    
+    const matchA = a.match(/^(\d+)\./);
+    const matchB = b.match(/^(\d+)\./);
+    const numA = matchA ? parseInt(matchA[1], 10) : 9999;
+    const numB = matchB ? parseInt(matchB[1], 10) : 9999;
+    
+    if (numA !== numB) {
+      return numA - numB;
+    }
+    return cleanA.localeCompare(cleanB);
   });
 
   return (
@@ -69,14 +81,17 @@ export default async function Bilder() {
       </section>
 
       {/* --- AUTOMATISKA KATEGORIER FRÅN SUPABASE --- */}
-      {categories.map((category, index) => (
-        <CollapsibleGallery 
-          key={category} 
-          category={category} 
-          images={groupedImages[category]} 
-          defaultOpen={index === 0} 
-        />
-      ))}
+      {categories.map((category, index) => {
+        const cleanCategory = category.replace(/^\d+\.\s*/, '');
+        return (
+          <CollapsibleGallery 
+            key={category} 
+            category={cleanCategory} 
+            images={groupedImages[category]} 
+            defaultOpen={index === 0} 
+          />
+        );
+      })}
 
     </div>
   );
