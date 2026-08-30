@@ -121,46 +121,69 @@ export default async function AdminPage() {
               </div>
               <div className="flex flex-col gap-1.5">
                 <label
-                  htmlFor="date"
                   className="text-xs uppercase tracking-widest"
                   style={{ color: "var(--text-light)" }}
                 >
                   Starttid *
                 </label>
-                <input
-                  id="date"
-                  name="date"
-                  type="datetime-local"
-                  required
-                  className="px-4 py-3 text-sm border bg-transparent outline-none"
-                  style={{
-                    borderColor: "var(--border)",
-                    color: "var(--text-dark)",
-                    backgroundColor: "var(--bg)",
-                    colorScheme: "dark",
-                  }}
-                />
+                <div className="flex gap-2">
+                  <input
+                    name="start_date"
+                    type="date"
+                    required
+                    className="flex-1 px-4 py-3 text-sm border bg-transparent outline-none"
+                    style={{
+                      borderColor: "var(--border)",
+                      color: "var(--text-dark)",
+                      backgroundColor: "var(--bg)",
+                      colorScheme: "dark",
+                    }}
+                  />
+                  <input
+                    name="start_time"
+                    type="time"
+                    required
+                    className="w-28 px-4 py-3 text-sm border bg-transparent outline-none"
+                    style={{
+                      borderColor: "var(--border)",
+                      color: "var(--text-dark)",
+                      backgroundColor: "var(--bg)",
+                      colorScheme: "dark",
+                    }}
+                  />
+                </div>
               </div>
               <div className="flex flex-col gap-1.5">
                 <label
-                  htmlFor="end_date"
                   className="text-xs uppercase tracking-widest"
                   style={{ color: "var(--text-light)" }}
                 >
                   Sluttid (valfritt)
                 </label>
-                <input
-                  id="end_date"
-                  name="end_date"
-                  type="datetime-local"
-                  className="px-4 py-3 text-sm border bg-transparent outline-none"
-                  style={{
-                    borderColor: "var(--border)",
-                    color: "var(--text-dark)",
-                    backgroundColor: "var(--bg)",
-                    colorScheme: "dark",
-                  }}
-                />
+                <div className="flex gap-2">
+                  <input
+                    name="end_date"
+                    type="date"
+                    className="flex-1 px-4 py-3 text-sm border bg-transparent outline-none"
+                    style={{
+                      borderColor: "var(--border)",
+                      color: "var(--text-dark)",
+                      backgroundColor: "var(--bg)",
+                      colorScheme: "dark",
+                    }}
+                  />
+                  <input
+                    name="end_time"
+                    type="time"
+                    className="w-28 px-4 py-3 text-sm border bg-transparent outline-none"
+                    style={{
+                      borderColor: "var(--border)",
+                      color: "var(--text-dark)",
+                      backgroundColor: "var(--bg)",
+                      colorScheme: "dark",
+                    }}
+                  />
+                </div>
               </div>
             </div>
 

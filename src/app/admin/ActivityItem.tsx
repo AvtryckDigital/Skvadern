@@ -64,11 +64,17 @@ export function ActivityItem({ activity }: { activity: Activity }) {
           </div>
           <div className="flex flex-col gap-1">
             <label className="text-xs uppercase" style={{ color: "var(--text-light)" }}>Starttid *</label>
-            <input name="date" type="datetime-local" defaultValue={activity.date.slice(0, 16)} required className="px-3 py-2 text-sm border bg-transparent" style={{ borderColor: "var(--border)", color: "var(--text-dark)" }} />
+            <div className="flex gap-2">
+              <input name="start_date" type="date" defaultValue={activity.date.slice(0, 10)} required className="flex-1 px-3 py-2 text-sm border bg-transparent" style={{ borderColor: "var(--border)", color: "var(--text-dark)" }} />
+              <input name="start_time" type="time" defaultValue={activity.date.slice(11, 16)} required className="w-24 px-3 py-2 text-sm border bg-transparent" style={{ borderColor: "var(--border)", color: "var(--text-dark)" }} />
+            </div>
           </div>
           <div className="flex flex-col gap-1">
             <label className="text-xs uppercase" style={{ color: "var(--text-light)" }}>Sluttid (valfritt)</label>
-            <input name="end_date" type="datetime-local" defaultValue={activity.end_date ? activity.end_date.slice(0, 16) : ""} className="px-3 py-2 text-sm border bg-transparent" style={{ borderColor: "var(--border)", color: "var(--text-dark)" }} />
+            <div className="flex gap-2">
+              <input name="end_date" type="date" defaultValue={activity.end_date ? activity.end_date.slice(0, 10) : ""} className="flex-1 px-3 py-2 text-sm border bg-transparent" style={{ borderColor: "var(--border)", color: "var(--text-dark)" }} />
+              <input name="end_time" type="time" defaultValue={activity.end_date ? activity.end_date.slice(11, 16) : ""} className="w-24 px-3 py-2 text-sm border bg-transparent" style={{ borderColor: "var(--border)", color: "var(--text-dark)" }} />
+            </div>
           </div>
           <div className="flex flex-col gap-1">
             <label className="text-xs uppercase" style={{ color: "var(--text-light)" }}>Plats</label>

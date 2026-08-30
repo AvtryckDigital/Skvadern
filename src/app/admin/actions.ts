@@ -6,11 +6,18 @@ import { revalidatePath, revalidateTag } from "next/cache";
 export async function addActivity(formData: FormData) {
   const supabase = await createClient();
 
-  const end_date = formData.get("end_date") as string;
+  const startDate = formData.get("start_date") as string;
+  const startTime = formData.get("start_time") as string;
+  const date = startDate && startTime ? `${startDate}T${startTime}` : null;
+
+  const endDate = formData.get("end_date") as string;
+  const endTime = formData.get("end_time") as string;
+  const end_date = endDate && endTime ? `${endDate}T${endTime}` : null;
+
   const { error } = await supabase.from("activities").insert({
     title: formData.get("title") as string,
-    date: formData.get("date") as string,
-    end_date: end_date || null,
+    date: date as string,
+    end_date: end_date,
     description: (formData.get("description") as string) || null,
     location: (formData.get("location") as string) || null,
   });
@@ -25,13 +32,20 @@ export async function addActivity(formData: FormData) {
 export async function editActivity(id: string, formData: FormData) {
   const supabase = await createClient();
 
-  const end_date = formData.get("end_date") as string;
+  const startDate = formData.get("start_date") as string;
+  const startTime = formData.get("start_time") as string;
+  const date = startDate && startTime ? `${startDate}T${startTime}` : null;
+
+  const endDate = formData.get("end_date") as string;
+  const endTime = formData.get("end_time") as string;
+  const end_date = endDate && endTime ? `${endDate}T${endTime}` : null;
+
   const { error, data } = await supabase
     .from("activities")
     .update({
       title: formData.get("title") as string,
-      date: formData.get("date") as string,
-      end_date: end_date || null,
+      date: date as string,
+      end_date: end_date,
       description: (formData.get("description") as string) || null,
       location: (formData.get("location") as string) || null,
     })
