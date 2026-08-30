@@ -24,7 +24,7 @@ export async function addActivity(formData: FormData) {
 
   if (error) throw new Error(error.message);
 
-  revalidateTag("activities");
+  revalidateTag("activities", "max");
   revalidatePath("/admin");
 }
 
@@ -56,7 +56,7 @@ export async function editActivity(id: string, formData: FormData) {
     throw new Error("Kunde inte uppdatera. Har du glömt att lägga till UPDATE-rättigheter (RLS Policy) i Supabase?");
   }
 
-  revalidateTag("activities");
+  revalidateTag("activities", "max");
   revalidatePath("/admin");
 }
 
@@ -70,6 +70,6 @@ export async function deleteActivity(id: string, _formData: FormData) {
 
   if (error) throw new Error(error.message);
 
-  revalidateTag("activities");
+  revalidateTag("activities", "max");
   revalidatePath("/admin");
 }

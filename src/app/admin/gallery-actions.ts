@@ -46,7 +46,7 @@ export async function uploadImage(
 
   if (dbError) return { error: dbError.message };
 
-  revalidateTag("gallery");
+  revalidateTag("gallery", "max");
   revalidatePath("/admin");
   return null;
 }
@@ -71,6 +71,6 @@ export async function deleteImage(id: string, _formData: FormData) {
 
   await supabase.from("gallery_images").delete().eq("id", id);
 
-  revalidateTag("gallery");
+  revalidateTag("gallery", "max");
   revalidatePath("/admin");
 }
