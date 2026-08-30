@@ -74,6 +74,20 @@ export default async function Kalender() {
       {/* Event cards */}
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto flex flex-col gap-4">
+          <div 
+            className="px-5 py-4 mb-4 text-sm border flex items-start sm:items-center gap-3" 
+            style={{ 
+              borderColor: "var(--border)", 
+              backgroundColor: "var(--bg-subtle)",
+              borderLeft: "3px solid var(--gold)"
+            }}
+          >
+            <span style={{ color: "var(--gold)", fontWeight: 600, letterSpacing: "0.05em" }}>OBS!</span>
+            <span style={{ color: "var(--text-mid)", fontFamily: "'Lora', serif", fontStyle: "italic" }}>
+              Tiderna nedan kan vara preliminära. Se alltid det officiella Facebook-evenemanget för exakta tider och detaljer.
+            </span>
+          </div>
+
           {!activities || activities.length === 0 ? (
             <p
               className="text-center py-16 text-sm"

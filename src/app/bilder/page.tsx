@@ -2,7 +2,7 @@ import Image from "next/image";
 import { unstable_cache } from "next/cache";
 import { createPublicClient } from "@/lib/supabase/public";
 import type { GalleryImage } from "@/lib/supabase/types";
-import { GalleryLightbox } from "./GalleryLightbox";
+import { CollapsibleGallery } from "./CollapsibleGallery";
 
 const getGalleryImages = unstable_cache(
   async () => {
@@ -69,24 +69,13 @@ export default async function Bilder() {
       </section>
 
       {/* --- AUTOMATISKA KATEGORIER FRÅN SUPABASE --- */}
-      {categories.map((category) => (
-        <section key={category} className="py-16 px-6 border-b" style={{ borderColor: "var(--border)" }}>
-          <div className="max-w-6xl mx-auto">
-            <div className="mb-10">
-              <p className="text-xs uppercase tracking-[0.3em] mb-2" style={{ color: "var(--gold)" }}>
-                Galleri
-              </p>
-              <h2
-                className="text-3xl font-bold"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                {category}
-              </h2>
-            </div>
-            
-            <GalleryLightbox images={groupedImages[category]} />
-          </div>
-        </section>
+      {categories.map((category, index) => (
+        <CollapsibleGallery 
+          key={category} 
+          category={category} 
+          images={groupedImages[category]} 
+          defaultOpen={index === 0} 
+        />
       ))}
 
     </div>
