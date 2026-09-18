@@ -41,6 +41,18 @@ function formatAcademicTime(iso: string) {
 export default async function Kalender() {
   const activities = await getActivities();
 
+  const groupedActivities = activities.reduce((acc, activity) => {
+    const date = new Date(activity.date);
+    const monthYear = date.toLocaleDateString("sv-SE", { month: "long", year: "numeric" });
+    const capitalizedMonthYear = monthYear.charAt(0).toUpperCase() + monthYear.slice(1);
+    
+    if (!acc[capitalizedMonthYear]) {
+      acc[capitalizedMonthYear] = [];
+    }
+    acc[capitalizedMonthYear].push(activity);
+    return acc;
+  }, {} as Record<string, Activity[]>);
+
   return (
     <div style={{ backgroundColor: "var(--bg)" }}>
       {/* Header */}
@@ -56,15 +68,14 @@ export default async function Kalender() {
             className="text-5xl font-bold mb-6"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Kalender
+            Kalendarium
           </h1>
           <p
             className="text-base leading-relaxed max-w-xl mx-auto"
             style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
           >
             <em>
-              Håll koll på föreningens stundande tillställningar och reservera
-              plats i kalendern.
+              Håll koll på föreningens stundande tillställningar nedan. <br />Prenumerera på kalendern för att inte missa nästa aktivitet.
             </em>
           </p>
           <SubscribeButtons />
@@ -75,7 +86,7 @@ export default async function Kalender() {
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto flex flex-col gap-4">
           <div 
-            className="px-5 py-4 mb-4 text-sm border flex items-start sm:items-center gap-3" 
+            className="px-5 py-3 mb-4 text-sm border flex items-start sm:items-center gap-3" 
             style={{ 
               borderColor: "var(--border)", 
               backgroundColor: "var(--bg-subtle)",
@@ -84,7 +95,7 @@ export default async function Kalender() {
           >
             <span style={{ color: "var(--gold)", fontWeight: 600, letterSpacing: "0.05em" }}>OBS!</span>
             <span style={{ color: "var(--text-mid)", fontFamily: "'Lora', serif", fontStyle: "italic" }}>
-              Tiderna nedan kan vara preliminära. Se alltid det officiella Facebook-evenemanget för exakta tider och detaljer.
+              Tiderna nedan kan vara preliminära. Exakta tider och detaljer finns alltid i Facebook-evenemanget.
             </span>
           </div>
 
@@ -96,161 +107,173 @@ export default async function Kalender() {
               Inga kommande aktiviteter just nu.
             </p>
           ) : (
-            activities.map((event) => (
-              <div
-                key={event.id}
-                className="border flex flex-col"
-                style={{
-                  borderColor: "var(--border)",
-                  borderLeft: "3px solid var(--gold)",
-                  backgroundColor: "var(--bg-subtle)",
-                }}
-              >
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-0 p-6">
-                {/* Aktivitet */}
-                <div className="flex items-center gap-3 flex-1 min-w-0">
-                  <Tag
-                    size={16}
-                    style={{ color: "var(--gold)" }}
-                    className="flex-shrink-0"
-                  />
-                  <div>
-                    <div
-                      className="text-xs uppercase tracking-widest mb-0.5"
-                      style={{ color: "var(--text-light)" }}
-                    >
-                      Aktivitet
-                    </div>
-                    <div
-                      className="text-sm font-medium"
-                      style={{ color: "var(--text-dark)" }}
-                    >
-                      {event.title}
-                    </div>
-                  </div>
-                </div>
-
-         
-
-                <div
-                  className="hidden sm:block w-px h-8 mx-6 flex-shrink-0"
-                  style={{ backgroundColor: "var(--border)" }}
-                />
-
-                {/* Datum */}
-                <div className="flex items-center gap-3 sm:w-30 flex-shrink-0">
-                  <CalendarDays
-                    size={16}
-                    style={{ color: "var(--gold)" }}
-                    className="flex-shrink-0"
-                  />
-                  <div>
-                    <div
-                      className="text-xs uppercase tracking-widest mb-0.5"
-                      style={{ color: "var(--text-light)" }}
-                    >
-                      Datum
-                    </div>
-                    <div
-                      className="text-sm font-medium"
-                      style={{ color: "var(--text-dark)" }}
-                    >
-                      {formatDate(event.date)}
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  className="hidden sm:block w-px h-8 mx-6 flex-shrink-0"
-                  style={{ backgroundColor: "var(--border)" }}
-                />
-
-                {/* Tid */}
-                <div className="flex items-center gap-3 sm:w-28 flex-shrink-0">
-                  <Clock
-                    size={16}
-                    style={{ color: "var(--gold)" }}
-                    className="flex-shrink-0"
-                  />
-                  <div className="min-w-0">
-                    <div
-                      className="text-xs uppercase tracking-widest mb-0.5"
-                      style={{ color: "var(--text-light)" }}
-                    >
-                      Tid
-                    </div>
-                    <div
-                      className="text-sm font-semibold truncate"
-                      style={{
-                        fontFamily: "'Playfair Display', serif",
-                        color: "var(--text-dark)",
-                      }}
-                    >
-                      {formatAcademicTime(event.date)}
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  className="hidden sm:block w-px h-8 mx-6 flex-shrink-0"
-                  style={{ backgroundColor: "var(--border)" }}
-                />
-
-                {/* Plats */}
-                <div className="flex items-center gap-3 sm:w-52 flex-shrink-0">
-                  <MapPin
-                    size={16}
-                    style={{ color: "var(--gold)" }}
-                    className="flex-shrink-0"
-                  />
-                  <div>
-                    <div
-                      className="text-xs uppercase tracking-widest mb-0.5"
-                      style={{ color: "var(--text-light)" }}
-                    >
-                      Plats
-                    </div>
-                    <div
-                      className="text-sm"
-                      style={{ color: "var(--text-mid)" }}
-                    >
-                      <span style={{ color: "var(--text-dark)" }}>
-                        {event.location ?? "Meddelas senare"}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Beskrivning — visas bara om den finns */}
-              {event.description && (
-                <div
-                  className="flex items-start gap-3 px-6 pb-5 pt-4 border-t"
-                  style={{ borderColor: "var(--border)" }}
+            Object.entries(groupedActivities).map(([monthYear, monthActivities]) => (
+              <div key={monthYear} className="mb-8 last:mb-0">
+                <h2 
+                  className="text-2xl font-bold mb-4" 
+                  style={{ fontFamily: "'Playfair Display', serif" }}
                 >
-                  <FileText
-                    size={16}
-                    style={{ color: "var(--gold)" }}
-                    className="flex-shrink-0 mt-0.5"
-                  />
-                  <div>
+                  {monthYear}
+                </h2>
+                <div className="flex flex-col gap-4">
+                  {monthActivities.map((event) => (
                     <div
-                      className="text-xs uppercase tracking-widest mb-1"
-                      style={{ color: "var(--text-light)" }}
-                    >
-                      Beskrivning
-                    </div>
-                    <p
-                      className="text-sm leading-relaxed"
+                      key={event.id}
+                      className="border flex flex-col"
                       style={{
-                        color: "var(--text-dark)",
+                        borderColor: "var(--border)",
+                        borderLeft: "3px solid var(--gold)",
+                        backgroundColor: "var(--bg-subtle)",
                       }}
                     >
-                      {event.description}
-                    </p>
-                  </div>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-0 p-3">
+                      {/* Aktivitet */}
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <Tag
+                          size={16}
+                          style={{ color: "var(--gold)" }}
+                          className="flex-shrink-0"
+                        />
+                        <div>
+                          <div
+                            className="text-xs uppercase tracking-widest mb-0.5"
+                            style={{ color: "var(--text-light)" }}
+                          >
+                            Aktivitet
+                          </div>
+                          <div
+                            className="text-sm font-medium"
+                            style={{ color: "var(--text-dark)" }}
+                          >
+                            {event.title}
+                          </div>
+                        </div>
+                      </div>
+
+               
+
+                      <div
+                        className="hidden sm:block w-px h-8 mx-6 flex-shrink-0"
+                        style={{ backgroundColor: "var(--border)" }}
+                      />
+
+                      {/* Datum */}
+                      <div className="flex items-center gap-3 sm:w-44 flex-shrink-0">
+                        <CalendarDays
+                          size={16}
+                          style={{ color: "var(--gold)" }}
+                          className="flex-shrink-0"
+                        />
+                        <div>
+                          <div
+                            className="text-xs uppercase tracking-widest mb-0.5"
+                            style={{ color: "var(--text-light)" }}
+                          >
+                            Datum
+                          </div>
+                          <div
+                            className="text-sm font-medium"
+                            style={{ color: "var(--text-dark)" }}
+                          >
+                            {formatDate(event.date)}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        className="hidden sm:block w-px h-8 mx-6 flex-shrink-0"
+                        style={{ backgroundColor: "var(--border)" }}
+                      />
+
+                      {/* Tid */}
+                      <div className="flex items-center gap-3 sm:w-28 flex-shrink-0">
+                        <Clock
+                          size={16}
+                          style={{ color: "var(--gold)" }}
+                          className="flex-shrink-0"
+                        />
+                        <div className="min-w-0">
+                          <div
+                            className="text-xs uppercase tracking-widest mb-0.5"
+                            style={{ color: "var(--text-light)" }}
+                          >
+                            Tid
+                          </div>
+                          <div
+                            className="text-sm font-semibold truncate"
+                            style={{
+                              fontFamily: "'Playfair Display', serif",
+                              color: "var(--text-dark)",
+                            }}
+                          >
+                            {formatAcademicTime(event.date)}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        className="hidden sm:block w-px h-8 mx-6 flex-shrink-0"
+                        style={{ backgroundColor: "var(--border)" }}
+                      />
+
+                      {/* Plats */}
+                      <div className="flex items-center gap-3 sm:w-52 flex-shrink-0">
+                        <MapPin
+                          size={16}
+                          style={{ color: "var(--gold)" }}
+                          className="flex-shrink-0"
+                        />
+                        <div>
+                          <div
+                            className="text-xs uppercase tracking-widest mb-0.5"
+                            style={{ color: "var(--text-light)" }}
+                          >
+                            Plats
+                          </div>
+                          <div
+                            className="text-sm"
+                            style={{ color: "var(--text-mid)" }}
+                          >
+                            <span style={{ color: "var(--text-dark)" }}>
+                              {event.location ?? "Meddelas senare"}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Beskrivning — visas bara om den finns */}
+                    {event.description && (
+                      <div
+                        className="flex items-start gap-3 px-6 pb-6 pt-4 border-t"
+                        style={{ borderColor: "var(--border)" }}
+                      >
+                        <FileText
+                          size={16}
+                          style={{ color: "var(--gold)" }}
+                          className="flex-shrink-0 mt-0.5"
+                        />
+                        <div>
+                          <div
+                            className="text-xs uppercase tracking-widest mb-1"
+                            style={{ color: "var(--text-light)" }}
+                          >
+                            Beskrivning
+                          </div>
+                          <p
+                            className="text-sm leading-relaxed"
+                            style={{
+                              color: "var(--text-dark)",
+                            }}
+                          >
+                            {event.description}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    </div>
+                  ))}
                 </div>
-              )}
               </div>
             ))
           )}

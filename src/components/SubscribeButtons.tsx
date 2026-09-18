@@ -22,8 +22,8 @@ export function SubscribeButtons() {
         className="flex items-center justify-center gap-2 px-6 py-3 border text-sm uppercase tracking-widest hover:bg-[var(--gold)] hover:text-white transition-colors"
         style={{ borderColor: "var(--gold)", color: "var(--gold)", backgroundColor: "transparent" }}
       >
-        <Smartphone size={18} />
-        iPhone / Apple
+        <CalendarPlus size={18} />
+        Apple 
       </a>
       <a
         href={googleCalUrl}
@@ -33,7 +33,7 @@ export function SubscribeButtons() {
         style={{ borderColor: "var(--gold)", color: "var(--gold)", backgroundColor: "transparent" }}
       >
         <CalendarPlus size={18} />
-        Android / Google
+        Google 
       </a>
     </div>
   );

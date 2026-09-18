@@ -11,7 +11,7 @@ const navLinks = [
   { href: "/evenemang", label: "Evenemang" },
   { href: "/historia", label: "Historia" },
   { href: "/bilder", label: "Bilder" },
-  { href: "/kalender", label: "Kalender" },
+  { href: "/kalender", label: "Kalendarium" },
 ];
 
 export default function Navbar() {
