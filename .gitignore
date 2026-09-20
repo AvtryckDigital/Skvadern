@@ -43,3 +43,15 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# Cloudflare / OpenNext
+.dev.vars
+.open-next/
+.wrangler/
+
+# Temporary files
+scratch/
+
+# AI Assistant files (optional, but good to ignore if you don't want them in repo)
+CLAUDE.md
+AGENTS.md
