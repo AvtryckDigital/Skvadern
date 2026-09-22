@@ -9,14 +9,16 @@ export default function BliEnSkvader() {
     e.preventDefault();
     setStatus("sending");
     const form = e.currentTarget;
-    const body = new URLSearchParams(new FormData(form) as never);
-    body.append("form-name", "bli-skvader");
+    const formData = new FormData(form);
+    
+    formData.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "DIN_API_NYCKEL_HÄR");
+    // Frivilligt: Ämne för e-postmeddelandet
+    formData.append("subject", "Ny intresseanmälan från skvadern.net");
 
     try {
-      const res = await fetch("/netlify-forms.html", {
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: body.toString(),
+        body: formData,
       });
       setStatus(res.ok ? "sent" : "error");
     } catch {
