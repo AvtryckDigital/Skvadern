@@ -22,6 +22,7 @@ function formatDateTime(iso: string) {
 export function ActivityItem({ activity }: { activity: Activity }) {
   const [isEditing, setIsEditing] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const { date, time } = formatDateTime(activity.date);
   
@@ -36,11 +37,15 @@ export function ActivityItem({ activity }: { activity: Activity }) {
   async function handleEdit(formData: FormData) {
     setIsPending(true);
     try {
-      await editActivity(activity.id, formData);
-      setIsEditing(false);
-    } catch (e) {
+      const result = await editActivity(activity.id, formData);
+      if (result?.error) {
+        setErrorMsg(result.error);
+      } else {
+        setIsEditing(false);
+      }
+    } catch (e: any) {
       console.error(e);
-      alert("Kunde inte spara");
+      setErrorMsg("Kunde inte spara");
     } finally {
       setIsPending(false);
     }
@@ -85,10 +90,15 @@ export function ActivityItem({ activity }: { activity: Activity }) {
             <input name="description" defaultValue={activity.description || ""} className="px-3 py-2 text-sm border bg-transparent" style={{ borderColor: "var(--border)", color: "var(--text-dark)" }} />
           </div>
         </div>
+
+        {errorMsg && (
+          <div className="text-red-500 text-sm mt-1">{errorMsg}</div>
+        )}
+
         <div className="flex gap-3 justify-end mt-2">
           <button
             type="button"
-            onClick={() => setIsEditing(false)}
+            onClick={() => { setIsEditing(false); setErrorMsg(null); }}
             className="flex items-center gap-1 px-4 py-2 text-xs uppercase tracking-widest border transition-colors hover:bg-black/5"
             style={{ borderColor: "var(--border)", color: "var(--text-light)" }}
           >

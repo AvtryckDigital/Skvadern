@@ -14,6 +14,12 @@ export async function addActivity(formData: FormData) {
   const endTime = formData.get("end_time") as string;
   const end_date = endDate && endTime ? `${endDate}T${endTime}` : null;
 
+  if (date && end_date) {
+    if (new Date(end_date) < new Date(date)) {
+      return { error: "Sluttiden kan inte vara före starttiden." };
+    }
+  }
+
   const { error } = await supabase.from("activities").insert({
     title: formData.get("title") as string,
     date: date as string,
@@ -22,10 +28,11 @@ export async function addActivity(formData: FormData) {
     location: (formData.get("location") as string) || null,
   });
 
-  if (error) throw new Error(error.message);
+  if (error) return { error: error.message };
 
   revalidateTag("activities", "max");
   revalidatePath("/admin");
+  return { success: true };
 }
 
 export async function editActivity(id: string, formData: FormData) {
@@ -39,6 +46,12 @@ export async function editActivity(id: string, formData: FormData) {
   const endTime = formData.get("end_time") as string;
   const end_date = endDate && endTime ? `${endDate}T${endTime}` : null;
 
+  if (date && end_date) {
+    if (new Date(end_date) < new Date(date)) {
+      return { error: "Sluttiden kan inte vara före starttiden." };
+    }
+  }
+
   const { error, data } = await supabase
     .from("activities")
     .update({
@@ -51,13 +64,14 @@ export async function editActivity(id: string, formData: FormData) {
     .eq("id", id)
     .select();
 
-  if (error) throw new Error(error.message);
+  if (error) return { error: error.message };
   if (!data || data.length === 0) {
-    throw new Error("Kunde inte uppdatera. Har du glömt att lägga till UPDATE-rättigheter (RLS Policy) i Supabase?");
+    return { error: "Kunde inte uppdatera. Har du glömt att lägga till UPDATE-rättigheter (RLS Policy) i Supabase?" };
   }
 
   revalidateTag("activities", "max");
   revalidatePath("/admin");
+  return { success: true };
 }
 
 export async function deleteActivity(id: string, _formData: FormData) {
