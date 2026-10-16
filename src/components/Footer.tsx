@@ -19,8 +19,8 @@ export default function Footer() {
                 />
               </div>
               <span
-                style={{ fontFamily: "'Playfair Display', serif", color: "var(--text-dark)" }}
-                className="text-base font-semibold"
+                className="font-display text-lg font-semibold"
+                style={{ color: "var(--text-dark)" }}
               >
                 Skvaderns Herrförening
               </span>
@@ -41,7 +41,8 @@ export default function Footer() {
                 { href: "/", label: "Hem" },
                 { href: "/evenemang", label: "Evenemang" },
                 { href: "/historia", label: "Historia" },
-                { href: "/bilder", label: "Bilder" },
+                { href: "/styrelsen", label: "Styrelsen" },
+                { href: "/galleri", label: "Galleri" },
                 { href: "/kalender", label: "Kalendarium" },
                 { href: "/sangbok", label: "Sångbok" },
               ].map((link) => (

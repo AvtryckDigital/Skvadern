@@ -337,22 +337,16 @@ export default function SongSearch({ songs }: { songs: SongListItem[] }) {
                 className="group flex gap-4 px-5 py-4 transition-colors hover:bg-white/5"
               >
                 <span
-                  className="w-10 shrink-0 pt-0.5 text-right font-bold text-xl"
-                  style={{
-                    fontFamily: "'Playfair Display', serif",
-                    color: "var(--gold)",
-                  }}
+                  className="font-display w-10 shrink-0 pt-0.5 text-right font-bold text-xl"
+                  style={{ color: "var(--gold)" }}
                   aria-hidden
                 >
                   {song.number ?? ""}
                 </span>
                 <span className="min-w-0 flex-1">
                   <span
-                    className="block text-lg font-bold leading-snug group-hover:text-[var(--gold)] transition-colors"
-                    style={{
-                      fontFamily: "'Playfair Display', serif",
-                      color: "var(--text-dark)",
-                    }}
+                    className="font-display block text-lg font-bold leading-snug group-hover:text-[var(--gold)] transition-colors"
+                    style={{ color: "var(--text-dark)" }}
                   >
                     <Highlight text={song.title} query={query} />
                   </span>
@@ -370,11 +364,8 @@ export default function SongSearch({ songs }: { songs: SongListItem[] }) {
                   </span>
                   {line && (
                     <span
-                      className="mt-1 block truncate text-xs italic"
-                      style={{
-                        fontFamily: "'Lora', serif",
-                        color: "var(--text-light)",
-                      }}
+                      className="editorial-text mt-1 block truncate text-xs italic"
+                      style={{ color: "var(--text-light)" }}
                     >
                       &rdquo;
                       <Highlight text={line} query={query} />

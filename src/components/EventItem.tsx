@@ -50,11 +50,8 @@ export default function EventItem({
         aria-hidden
       >
         <span
-          className="text-3xl font-bold leading-none"
-          style={{
-            fontFamily: "'Playfair Display', serif",
-            color: "var(--text-dark)",
-          }}
+          className="font-display text-3xl font-bold leading-none"
+          style={{ color: "var(--text-dark)" }}
         >
           {dayOfMonth(activity.date)}
         </span>
@@ -71,10 +68,7 @@ export default function EventItem({
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           <h3
             className="text-xl font-bold leading-tight"
-            style={{
-              fontFamily: "'Playfair Display', serif",
-              color: "var(--text-dark)",
-            }}
+            style={{ color: "var(--text-dark)" }}
           >
             {targetHref ? (
               <Link
@@ -107,7 +101,7 @@ export default function EventItem({
         </p>
 
         <div
-          className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-xs"
+          className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-sm"
           style={{ color: "var(--text-mid)" }}
         >
           <span className="capitalize">{weekday(activity.date)}</span>
@@ -126,25 +120,13 @@ export default function EventItem({
         </div>
 
         {activity.description && !compact && (
-          <p
-            className="mt-3 text-sm leading-relaxed whitespace-pre-line"
-            style={{
-              fontFamily: "'Lora', serif",
-              color: "var(--text-mid)",
-            }}
-          >
+          <p className="editorial-text mt-3 text-sm leading-relaxed whitespace-pre-line">
             {activity.description}
           </p>
         )}
 
         {activity.description && compact && (
-          <p
-            className="mt-2.5 text-xs leading-relaxed line-clamp-2"
-            style={{
-              fontFamily: "'Lora', serif",
-              color: "var(--text-mid)",
-            }}
-          >
+          <p className="editorial-text mt-2.5 text-xs leading-relaxed line-clamp-2">
             {activity.description}
           </p>
         )}

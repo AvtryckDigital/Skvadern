@@ -1,70 +1,3 @@
--- ==============================================================================
--- Skvaderns Sångbok - Komplett Supabase Schema & Data (125 visor)
--- ==============================================================================
--- Instruktion:
--- 1. Gå till ditt Supabase-projekt -> SQL Editor -> 'New query'
--- 2. Klistra in hela detta skript och klicka på 'Run'
--- Alla 125 sånger ur sångboken läggs in direkt i din Supabase-databas!
--- ==============================================================================
-
--- 1. Skapa tabellen om den inte redan finns
-CREATE TABLE IF NOT EXISTS public.songs (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  slug TEXT NOT NULL UNIQUE,
-  title TEXT NOT NULL,
-  number INTEGER,
-  category TEXT,
-  melody TEXT,
-  lyrics TEXT NOT NULL DEFAULT '',
-  notes TEXT,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-
--- Index för snabb sökning
-CREATE INDEX IF NOT EXISTS songs_slug_idx ON public.songs(slug);
-CREATE INDEX IF NOT EXISTS songs_number_idx ON public.songs(number);
-
--- Aktivera Row Level Security (RLS)
-ALTER TABLE public.songs ENABLE ROW LEVEL SECURITY;
-
--- Alla kan läsa sånger
-DO $$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'songs' AND policyname = 'Public read songs'
-  ) THEN
-    CREATE POLICY "Public read songs" ON public.songs FOR SELECT USING (true);
-  END IF;
-END $$;
-
--- Endast inloggade administratörer kan lägga till, redigera och ta bort
-DO $$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'songs' AND policyname = 'Authenticated insert songs'
-  ) THEN
-    CREATE POLICY "Authenticated insert songs" ON public.songs FOR INSERT TO authenticated WITH CHECK (true);
-  END IF;
-END $$;
-
-DO $$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'songs' AND policyname = 'Authenticated update songs'
-  ) THEN
-    CREATE POLICY "Authenticated update songs" ON public.songs FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
-  END IF;
-END $$;
-
-DO $$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'songs' AND policyname = 'Authenticated delete songs'
-  ) THEN
-    CREATE POLICY "Authenticated delete songs" ON public.songs FOR DELETE TO authenticated USING (true);
-  END IF;
-END $$;
-
 -- Skvaderns sångbok: 125 sånger extraherade ur sangbok.pdf
 
 INSERT INTO public.songs (slug, title, number, category, melody, lyrics, notes)
@@ -242,7 +175,7 @@ Vapen i hand
 Och käckt vår ovän nära!
 Dö för vårt land
 Är lefva för vår ära.
-Rastlöst fram från strid till strid, T
+Rastlöst fram från strid till strid,
 Ty nu är stunden vår och nu är skördens tid!
 Glesnade leder vittne bära
 Herrligt om mod och bragder, om vårt landsörsvar.
@@ -263,15 +196,11 @@ och världens herrar lika?
 De drogo bort från vin och sång
 till vardagslivets tråk och tvång;
 O, jerum...
-Filosofer
-: Den ene vetenskap och vett
+Filosofer: Den ene vetenskap och vett
 in i scholares mänger,
-J
-urister
-: den andre i sitt anlets svett
+Jurister: den andre i sitt anlets svett
 på paragrafer vränger,
-Teologer
-: en plåstrar själen som är skral,
+Teologer: en plåstrar själen som är skral,
 Medicinare
 : en lappar hop dess trasiga fodral;
 O, jerum...
@@ -340,8 +269,8 @@ ditt fula drägg,
 kom hit igen när du har fått skägg.
 Nej, detta var ju inte bra,
 jag skall bli full ikväll.
-Då plötsligt en ide jag fick, d
-e har ju sprit på Shell.
+Då plötsligt en ide jag fick,
+de har ju sprit på Shell.
 Många flaskor stod där på ra''.
 Så nu ska jag bli full och gla''.
 Den röda drycken åkte ner,
@@ -350,7 +279,7 @@ nu kan jag inte se nå’t mer.', NULL),
 är jag svensk eller finne?
 Kommer inte ihåg.
 Inne!
-ä r jag ut eller inne?
+är jag ut eller inne?
 Jag har luckor i minne.
 sån’ där små alkohål.
 Men besinn er,
@@ -377,8 +306,7 @@ Jag borde slutat för länge sedan,
 men denna sup är så liten.
 Vad tjänar att hyckla?
 Tids nog får man cykla.', 'Text: Povel Ramel'),
-  ('i-norrland-vaxer-det', 'I Norrland växer det', 27, 'Snapsvisor', 'I Apladalen i Värnamo', 'I
-Norrland växer det tallar höga.
+  ('i-norrland-vaxer-det', 'I Norrland växer det', 27, 'Snapsvisor', 'I Apladalen i Värnamo', 'I Norrland växer det tallar höga.
 Att dom är höga det båtar föga,
 en vacker dag faller dom omkull
 allt för den eviga törstens skull!', NULL),
@@ -394,17 +322,12 @@ Det är som att kyssa
 en nymorgnad flickas.
 Ju mera man får
 desto mer vill man ha.
-En ensammer jävel
-g
-ör alls ingen glad.', NULL),
-  ('livet-ar-harligt', 'Livet är härligt', 28, 'Snapsvisor', 'Röda kavalleriet', 'Liv
-et är härligt,
+En ensammer jävel gör alls ingen glad.', NULL),
+  ('livet-ar-harligt', 'Livet är härligt', 28, 'Snapsvisor', 'Röda kavalleriet', 'Livet är härligt,
 Tavaritj, vårt liv är härligt.
-Vi
-alla våra små bekymmer glömmer,
+Vi alla våra små bekymmer glömmer,
 när vi har fått en tår på tand,
-e
-n skål.
+en skål.
 Ta dig en vodka,
 Tavaritj, en liten vodka.
 Glasen i botten vi tillsammans tömmer,
@@ -462,9 +385,7 @@ blir oskuldsfull och vit.', NULL),
   ('nar-gaddorna-leker', 'När gäddorna leker', 32, 'Snapsvisor', NULL, 'När gäddorna leker i vikar och vass
 och solen går ned bakom Sjöbloms dass,
 ...Ja, då är det vår
-och hela
-n
-(halvan, tersen, osv. snapsen) går.
+och helan (halvan, tersen, osv. snapsen) går.
 ...Ja,
 då är det höst
 och snapsen vår tröst.
@@ -473,8 +394,8 @@ då är det vinter
 och snapsen hon slinter.', NULL),
   ('utvandraren', 'Utvandraren', 32, 'Snapsvisor', 'När månen vandrar', 'Jag tänker sälja min dromedar,
 jag ämnar flytta till Norden.
-Vem vill va'' bosatt i Kandahar d
-är man får ligga vid borden?
+Vem vill va'' bosatt i Kandahar
+där man får ligga vid borden?
 Nu konverterar jag här på snabben
 jag vill ha akvavit till kebaben.
 Var ingen mes,
@@ -502,12 +423,10 @@ och tager oss en sup.
 Det gör så gott i magen
 att få ett litet rus.
 ||: Ja, jag lovar liv och död,
-att på mig går ingen nöd
-,
+att på mig går ingen nöd,
 så länge det finns brännvin
 och kullor/masar i överflöd. :||', NULL),
-  ('torsten-rasar', 'Törsten rasar', 34, 'Snapsvisor', 'Längtan till landet (Vintern rasat)', 'Törst
-en rasar uti våra strupar,
+  ('torsten-rasar', 'Törsten rasar', 34, 'Snapsvisor', 'Längtan till landet (Vintern rasat)', 'Törsten rasar uti våra strupar,
 tungan hänger torr och styv och stel.
 Men snart vankas stora långa supar,
 var och en får sin beskärda del.
@@ -539,9 +458,7 @@ Halvan:
 ... uti magens dunkla valv
 vandrar djävulen och ropar på en halv.
 Tersen:
-... u
-ti magen h
-ärs och tvärs
+... uti magen härs och tvärs
 kilar djävulen och väntar på en ters.
 Kvarten:
 ... magen tom och svart
@@ -555,14 +472,11 @@ springer djävulen och skriar på en sext.
 Septen:
 ... uti magen halvoppknäppt
 raglar själve fan och vrålar på en sept.
-Okte
-n:
+Okten:
 ... uti magen an och av
 vankar djävulen och väser på oktav.
-Non
-en:
-...
-ibland magens
+Nonen:
+... ibland magens
 såg och spån
 ramlar djävulen och väntar på en non.
 Sisten:
@@ -606,29 +520,22 @@ jätteplask, jätteplask.
 Och så blir man lite dragen,
 men pigg och rask,
 pigg och rask, pigg och rask.', NULL),
-  ('granskog', 'Granskog', 40, 'Snapsvisor', NULL, '', NULL),
-  ('har-ar-gudagott-att-vara', 'Här är gudagott att vara', 40, 'Snapsvisor', NULL, 'Granskog. Gruvor. Lingon. Lån
-gfil.
+  ('granskog', 'Granskog', 40, 'Snapsvisor', NULL, 'Granskog. Gruvor. Lingon. Långfil.
 Snörök. Skare. Forsar. Fjäll.
 Tallhed. Tjälskott. Kraftverk. Plogbil.
 Myrar. Hjortron. Renskinnsfäll.
 Norrsken. Snöstorm. Älvar. Myggen.
 Lador. Midnattssol. Sulfit.
 Ripor. Fjällbjörk. Skidor. Hyggen.
-Vargar. Löjrom. Akvavit.
-Här är gudagott att vara
-Text: G. Wennerberg
-Här
-är gudagott att vara.
+Vargar. Löjrom. Akvavit.', 'Text: Hans Carlsson'),
+  ('har-ar-gudagott-att-vara', 'Här är gudagott att vara', 40, 'Snapsvisor', NULL, 'Här är gudagott att vara.
 O, vad livet dock är skönt.
-Hör,
-vad fröjd från fåglars skara,
+Hör, vad fröjd från fåglars skara,
 se, vad gräset lyser grönt.
 Humlan surrar, fjäriln prålar,
 lärkan slår i skyn sin drill,
-och
-ur nektarfyllda skålar
-dricka oss små blommor till.', 'Text: Hans Carlsson'),
+och ur nektarfyllda skålar
+dricka oss små blommor till.', 'Text: Gunnar Wennerberg'),
   ('slottspoetens-snapsvisa', 'Slottspoetens snapsvisa', 43, 'Snapsvisor', 'Du ska inte tro det blir sommar', 'Du ska inte tro
 du kan sjunga,
 ifall inte du får en sup,
@@ -640,12 +547,10 @@ och därmed så har själva supen,
 förädlat ditt brännvin till sång!', NULL),
   ('vi-aro-sma-humlor-vi', 'Vi äro små humlor vi', 43, 'Snapsvisor', 'Karl-Alfred Boy', 'Vi äro små humlor vi, bzz bzz
 vi äro små humlor vi, bzz bzz
-v
-i äro små humlor som tar oss en geting
+vi äro små humlor som tar oss en geting
 vi äro små humlor vi, bzz bzz', NULL),
   ('supa-klockan-over-tolf', 'Supa klockan över tolf', 41, 'Snapsvisor', NULL, 'Supa klockan öfver tolf,
-le
-fva bland förryckta!
+lefva bland förryckta!
 Jorden är mitt kammargolf,
 solen är min lykta!
 Jag bryr mig om ingenting,
@@ -687,14 +592,12 @@ Till öl och brännvin går det åt,
 och till små flickor/pojkar emellanåt.
 Mitt lilla lån, det räcker inte,
 det går till öl och till brännvin.', NULL),
-  ('destillat', 'Destillat', 44, 'Snapsvisor', 'Rule Britannia', 'Åh, så sn
-apsen, i immiga små glas.
+  ('destillat', 'Destillat', 44, 'Snapsvisor', 'Rule Britannia', 'Åh, så snapsen, i immiga små glas.
 Låt oss fukta våra strupar med destillat.', NULL),
   ('finsk-snapsvisa', 'Finsk snapsvisa', 44, 'Snapsvisor', NULL, 'Int nu
 Men nu!
 Finsk snapsvisa – korta
-N
-u!', NULL),
+Nu!', NULL),
   ('svarmor', 'Svärmor', 44, 'Snapsvisor', NULL, 'Den dag då jag slängde svärmor i Volgasjön -
 Jag skrek: Kärringjävel, be nu din sista bön!
 Hon flöt, men jag kasta’ sten på ’na tills hon sjönk.', NULL),
@@ -703,8 +606,7 @@ det är bara att suga och dra,
 långt ner i strupen ska den va
 för guld i mun vill alla ha.
 Skål!', NULL),
-  ('hell-and-gore', 'Hell and gore', 45, 'Snapsvisor', 'Helan går', 'H
-ell and gore
+  ('hell-and-gore', 'Hell and gore', 45, 'Snapsvisor', 'Helan går', 'Hell and gore
 Chung hop father Allan Allan ley.
 Hell and gore
 Chung hop father Allan ley.
@@ -716,14 +618,13 @@ Chung hop father Allan ley.', NULL),
 och tom i krävan var kräket.
 Och tungan lådde vid skepparns gom,
 där han satt uti bleket.
-“
-Jag vill ha sill”, hördes måsen rope
+“Jag vill ha sill”, hördes måsen rope
 och skepparn svarte: “Jag vill ha O.P.
 om blott jag får, om blott jag får.”
 Nu måsen lyft ifrån klyvarbom
 och vinden spelar i tågen.
-OP:n svalkat har skepparns gom. J
-ag önskar blott att du såg''en.
+OP:n svalkat har skepparns gom.
+Jag önskar blott att du såg''en.
 Så nöjd och lycklig, den arme saten,
 han sätter storseglet den krabaten.
 Till sjöss han far,
@@ -763,7 +664,7 @@ Bordeaux, Bourdeaux!', NULL),
 de trampar druvor som sedan skall jäsas till vin
 Transpirationen viktig é
 ty den ger fin bouquet
-Vårtor och svar par följer mé,
+Vårtor och svampar följer mé,
 men vad gör väl dé?
 För...
 Vi vill ha vin,
@@ -806,10 +707,8 @@ vi skynda att självmant dricka
 och helga ett glas, som är över all rang,
 i tysthet - envar åt sin flicka!', 'Text: Franz Michael Franzén
 Musik: Olof Åhlström'),
-  ('fredmans-epistel-n-o-9-karaste-broder-systrar-och-vanner', 'Fredmans epistel N:o 9 - Käraste Bröder, systrar och Vänner', 54, 'Bordsvisor', NULL, 'Kär
-aste Bröder, Systrar och Vänner,
-si Fader Berg han skrufvar o
-ch spänner
+  ('fredmans-epistel-n-o-9-karaste-broder-systrar-och-vanner', 'Fredmans epistel N:o 9 - Käraste Bröder, systrar och Vänner', 54, 'Bordsvisor', NULL, 'Käraste Bröder, Systrar och Vänner,
+si Fader Berg han skrufvar och spänner
 strängarna på fiolen
 och stråken han tar i hand.
 Ögat är borta, näsan är klufven
@@ -823,7 +722,7 @@ Käraste bröder dansa på tå,
 handskar i hand och hattarna på!
 Si på jungfru Lona
 röda band i skona,
-ny strumpor himmelsblå!', 'Text och musik: C.M Bellman'),
+nya strumpor himmelsblå!', 'Text och musik: C.M Bellman'),
   ('vadsbro-skvadrons-visa', 'Vadsbro skvadrons visa', 55, 'Bordsvisor', NULL, '/:Var skall jag mig en flicka finna
 så vit, så skön som alpens ros?:/
 För du och jag,
@@ -831,8 +730,7 @@ ska bygga oss en boning, men var?
 Jo, där näktergalen sina drillar slår, drillar slår,
 där månen lyser så förtroligt,
 där bäcken rasslar, böljan slår.
-/: De
-n vän jag ständigt har i tankarna,
+/: Den vän jag ständigt har i tankarna,
 för den jag leva vill och dö. :/
 För du och jag.....
 /: Så skola vi tillsammans vandra,
@@ -846,8 +744,7 @@ som gräs och blommor vissnar bort. :/
 För du och jag...', NULL),
   ('lyft-ditt-valforsedda-glas', 'Lyft ditt välförsedda glas', 56, 'Bordsvisor', 'Bransle l’Officiale (Ding Dong Merrily on High)', 'Lyft ditt välförsedda glas.
 Det är en härlig börda.
-Nu har grabbarna kal
-as.
+Nu har grabbarna kalas.
 Vi segern snart skall skörda.
 ||: Dinge dinge dinge ding dinge
 dinge ding dinge dinge
@@ -865,8 +762,7 @@ dinge dinge ding
 dinge dinge ding dong dong,
 begravningsklockor klämtar. :||', 'Text: Medicinarspexet, Göteborg
 Musik: Jehan Tabourot c:a 1590'),
-  ('telefonen', 'Telefonen', 57, 'Bordsvisor', NULL, 'Jag har en te
-lefon
+  ('telefonen', 'Telefonen', 57, 'Bordsvisor', NULL, 'Jag har en telefon
 som går till himmelen
 och när jag ringer på
 så svarar man som så:
@@ -891,11 +787,8 @@ och Jesus konduktör.
 Det är så lätt, lätt, lätt
 när man har fribiljett
 när man är frälst, halleluja!', NULL),
-  ('fredmans-epistel-n-o-2-na-skrufva-fiolen', 'Fredmans epistel N:o 2 - Nå skrufva fiolen', 58, 'Bordsvisor', NULL, 'Nå
-skrufva Fiolen,
-Hej! Spelman
-sk
-ynda dej.
+  ('fredmans-epistel-n-o-2-na-skrufva-fiolen', 'Fredmans epistel N:o 2 - Nå skrufva fiolen', 58, 'Bordsvisor', NULL, 'Nå skrufva Fiolen,
+Hej! Spelman skynda dej.
 Kära Syster, hej!
 Svara inte nej,
 Svara Ja så bli Vi glada.
@@ -904,9 +797,7 @@ dej du på stolen,
 Och stryk din Silfversträng;
 Röda stråken släng,
 Och med armen sväng;
-Gör ej Fiolen
-s
-kada.
+Gör ej Fiolen skada.
 Du svettas, stor
 sak,
 I Brännvin
@@ -1007,13 +898,12 @@ eftersläckningen tillhör just de fenomenen
 inom brandmansyrket som det är nån verklig nytta med.
 Jag målar för mitt inre upp den härliga scenen:
 blodrött mitt i brandgult, ej ens prins Eugen en
-lika mustig vy kan måla, ens om han målade med
-sked.
+lika mustig vy kan måla, ens om han målade med sked.
 Ja, nu ska vi ut...', 'Text: Hasse Alfredsson ur spexet Djingis Khan
 Musik: Hjort-Anders Olsson'),
   ('sa-lange-rosten-ar-mild', 'Så länge rösten är mild', 63, 'Bordsvisor', 'Så länge skutan kan gå', 'Så länge rösten är mild,
-så länge ingen är vild, s
-å länge spegeln på väggen ger halvskaplig bild,
+så länge ingen är vild,
+så länge spegeln på väggen ger halvskaplig bild,
 så länge alla kan gå,
 så länge alla kan stå,
 så länge alla kan tralla så fyller vi på.', NULL),
@@ -1083,8 +973,7 @@ Trink, trink, Brüderlein trink,
 zieh'' nicht die Stirn so kraus.
 ||
 : Meide den Kummer und meide den Schmerz,
-dann ist d
-as Leben ein Scherz! : ||
+dann ist das Leben ein Scherz! : ||
 Trink,...
 ||:
 Meide die Weiber und meide das Bier, dann wird ein
@@ -1178,29 +1067,29 @@ så lekfulla i hågen.
 Men sista valsen i morgonstund,
 man hör från Svinnerön.
 Ljuvlig är sommarnatten ...', 'Text'),
-  ('bort-alt-hvad-oro-gor', 'Bort alt hvad oro gör', 73, 'Bordsvisor', NULL, 'Bacchi Tempel
-Text : C.M. Bellman
-Bort alt hvad oro gör,
+  ('bort-alt-hvad-oro-gor', 'Bort alt hvad oro gör', 73, 'Bordsvisor', NULL, 'Bort alt hvad oro gör,
 bort alt hvad hjertat qväljer!
 Bäst at man väljer
 bland desse Bouteiller
 sin mag-liqueur.
-Granne! Gör du just som jag gör
-,
+
+Granne! Gör du just som jag gör,
 vet denna oljan ger humeur.
 Hvad det var läckert!
 Hvad var det? Renskt Bläckert?
 Qui Monseigneur
+
 Bort alt hvad oro gör,
 alt är ju stoft och aska.
 Låt oss bli raska,
 och tömma vår flaska
 bland Bröderna.
+
 Granne! Gör du just som jag gör,
 Vet denna oljan ger humeur.
 Hvad det var mäktigt!
 Hva va det? ... Jo präktigt,
-Mallaga - ja!', NULL),
+Mallaga - ja!', 'Bacchi Tempel. Text: C.M. Bellman'),
   ('punschen-kommer', 'Punschen kommer', 76, 'Punschvisor', 'Lippen Schweigen ur operetten “Glada Änkan”', 'Punschen kommer, punschen kommer
 ljuv och sval.
 Glasen imma
@@ -1253,9 +1142,7 @@ Ofvandahls, kaffe med avec,
 Ofvandahls, Landings stora skräck,
 Ofvandahls, Napoleoncanapé,
 ger oss krafter nog att vandra vidare.', NULL),
-  ('punschens-lov', 'Punschens lov', 80, 'Punschvisor', 'Rövarvisan ur "Kamomilla stad"', 'enkel tur och retur”
-Ja,
-punschen är, och punschen var,
+  ('punschens-lov', 'Punschens lov', 80, 'Punschvisor', 'Rövarvisan ur "Kamomilla stad"', 'Ja, punschen är, och punschen var,
 och punschen skall förbliva
 en lidelse vi alla har,
 som inget kan fördriva.
@@ -1274,7 +1161,7 @@ som inget kan fördriva.
 Ja, punschen tinar upp, såväl,
 som svalkar både kropp och själ.
 Den botar begären och lindrar besvären,
-Ja, punschen den gör både gott och väl.', 'Text: Lars-Göran Sönnerbo, ur kårspexet “Sven Hedin eller en'),
+Ja, punschen den gör både gott och väl.', 'Text: Lars-Göran Sönnerbo, ur kårspexet “Sven Hedin eller en enkel tur och retur”'),
   ('crambamboli', 'Crambamboli', 79, 'Punschvisor', NULL, 'När Gud en gång den vackra världen skapade
 då fann Han allting ganska gott.
 Han tyckte dock, att Adam borde
@@ -1337,15 +1224,10 @@ börjar om från annat håll.
 Mera dricka större spricka,
 det ska vara min paroll.
 Ref', 'Text: Daniel Esberg och Jens Helmersson'),
-  ('nodens-melodi', 'Nödens melodi', 83, 'Skvadrianska sånger', NULL, 'ofred och svält (och spindlar och gift)
-och död och förintelse och svavel-regn.
-Samt visst misär.
-Melodi: Jag fångade en räv en dag
-Text: Björn Olausson och Tobias Larsson
-Jag känner att min blåsa växt,
+  ('nodens-melodi', 'Nödens melodi', 83, 'Skvadrianska sånger', 'Jag fångade en räv en dag', 'Jag känner att min blåsa växt,
 Den är på väg att spricka.
-Jag måste ut och kiss snart,
-och köpa nåt att dricka.', NULL),
+Jag måste ut och kissa snart,
+och köpa nåt att dricka.', 'Text: Björn Olausson och Tobias Larsson'),
   ('obesfvarad-elegance', 'Obesfvärad elegance', 84, 'Skvadrianska sånger', 'Flickorna i Småland', 'Med mörkaste kostymer och med skinande glans
 svävar Skvadern ut med obesfvärad elegans.
 Han harklar sig och damerna de faller uti trans
@@ -1365,10 +1247,8 @@ och äter lite glass.', 'Text och musik: Jonas Lycksell'),
   ('han-som-far-med-osanning', 'Han som far med osanning', 85, 'Skvadrianska sånger', 'Ritsch Ratsch filibombombom', 'Stämplarn är ett pack-pack-pack
 Inget snack snack snack
 Går på tjack tjack tjack
-Stämpla
-rn är ett pack-pack-pack
-Inget snack snack sn
-ack
+Stämplarn är ett pack-pack-pack
+Inget snack snack snack
 Går på tjack
 Han ljuger jämt,
 Ja som en jamt, Han är en jamt,
@@ -1475,8 +1355,7 @@ Blott Patron får veta', 'Text: Daniel Wiman & William Renström'),
   ('en-battre-varld', 'En bättre värld', 93, 'Skvadrianska sånger', 'Om alla berg och dalar vore ost och bröd', 'så skola de en gång bli Skvadrar ://
 :// Om alla vackra Ypsor stodo i en ring,
 och jag finge gå och välja ://', 'Text: Daniel Wiman :// Om alla angerpojkar hade elegance,'),
-  ('en-hand-i-aktenskap', 'En hand i äktenskap', 91, 'Skvadrianska sånger', 'Smedsvisan', 'En
-gång uppå kammaren skådade jag
+  ('en-hand-i-aktenskap', 'En hand i äktenskap', 91, 'Skvadrianska sånger', 'Smedsvisan', 'En gång uppå kammaren skådade jag
 En herre med sned rygg och krokiga drag
 Hans skjorta var av och svetten den rann
 Jag skådade en Angerman
@@ -1495,8 +1374,7 @@ Han samla'' sitt mod och bjöd ''na på dans
 Hon svarte "min pojke, du har ingen chans"
 En stiliger man har gett mig en ros
 Stick, nu ska jag träffa Patron!
-Hej
-hopp...
+Hej hopp...
 En stiliger man har gett mig en ros,
 Stick, nu ska jag träffa Patron!
 Med Ypsan förlorad, traska'' han hem
@@ -1604,8 +1482,7 @@ Miljonerna som gått er till gagn
 Mår bäst i Trevors famn
 Han trivs bäst på Norra berget
 Han kör hem i sin Lambo', 'Text: Odin Karlsen, Daniel Wiman'),
-  ('hjalp-mitt-glas-har-sinat', 'Hjälp – mitt glas har sinat!', 98, 'Skvadrianska sånger', 'Vem kan segla förutan vind', 'Vem
-kan kallas förutan Prick?
+  ('hjalp-mitt-glas-har-sinat', 'Hjälp – mitt glas har sinat!', 98, 'Skvadrianska sånger', 'Vem kan segla förutan vind', 'Vem kan kallas förutan Prick?
 Vem kan skriv’ utan Stämplarn’?
 Vem kan släcka den törsten sin,
 utan att fråga Samlarn’?
@@ -1806,27 +1683,27 @@ Knaprar mediciner som bromsar hans sönderfall,
 med sin nya flickvän, nyss fyllda 22.
 Hon var fröken Gästrikland år tvåtusentre,
 nu läser hon på Komvux en kurs i Matte B,
-och Rönnerdahl han skuttar s
-om alltid med ett skratt ur sängen,
+och Rönnerdahl han skuttar som alltid med ett skratt ur sängen,
 han är i svängen, han valsar, han hänger med.', 'Text: Hans Näsbrandt'),
-  ('kosmonauten', 'Kosmonauten', 115, 'Övriga visor', 'Hymn till Sovjetunionen', 'Jag he
-ter Nikolajev och kommer från Sovjet.
+  ('kosmonauten', 'Kosmonauten', 115, 'Övriga visor', 'Hymn till Sovjetunionen', 'Jag heter Nikolajev och kommer från Sovjet.
 Jag flyger runt jorden uti min rymdraket,
 och jag ska vara oppe i åttifyra varv,
 för det har Chrustjev sagt
 men det tycker jag är larv.
+
 Jag längtar hem, hem till min planet.
 Till fru och barn, där hemma i Sovjet.
 Men mest utav allt längtar jag till ett rum,
 med ett hjärta på dörren.
-J
-ag längtar hem till min planet,
+
+Jag längtar hem till min planet,
 till fru och barn, där hemma i Sovjet.
+
 Min kapsel innehåller, många instrument.
-Ja, mycket utav sådant som ä
-nnu ej är känt.
-Men lika förbannat vad ni än nu tror, j
-ag glömde gå på muggen innan jag for.
+Ja, mycket utav sådant som ännu ej är känt.
+Men lika förbannat vad ni än nu tror,
+jag glömde gå på muggen innan jag for.
+
 Jag längtar hem...', NULL),
   ('jesus-lever', 'Jesus lever', 116, 'Övriga visor', 'Sånt e livet', 'Jesus lever, han bor i Flogsta
 Han kör en Volvo och han är gift
@@ -1847,16 +1724,15 @@ Och han blev bjuden på varje fest
 Å vilken kille, han fick ju vatten
 att bli till rusdryck utan jäst
 :/ Jesus lever, han bor i Flogsta... :/', NULL),
-  ('gallivarevisan', 'Gällivarevisan', 117, 'Övriga visor', NULL, 'Dänk a
-tt på lördag skulle fara
+  ('gallivarevisan', 'Gällivarevisan', 117, 'Övriga visor', NULL, 'Dänk att på lördag skulle fara
 in till Gällivaara på Karrakatorg.
-Tär
-pjuta dricka brännvinsflaska
+Tär pjuta dricka brännvinsflaska
 gott som djävla satan voj voj.
 Te vara roliga liven, para slagsmål och niven
 åka polisstasonen, te vara jävliga fasonen.
 Sitta inne halva natten, leva limpa och vatten
 komma ut morgonröken, nappast säja tå ajöken.
+
 Men dänkte perkele anamma
 kanske vara samma åka Vistafoss.
 Tär sänner till en gammal licka
@@ -1865,6 +1741,7 @@ Te prukar pli granska sällan, fara hälsa på fjällan
 kanske få lite mellan, para inte fastna fällan.
 Te är klart man riskera, ingenting refletera
 para inte nå mera, måste gå å operera.
+
 Men nu ja luta erotiken
 öppna pritfabriken sälja akvavit.
 Å komma lansviskalen nära
@@ -1872,7 +1749,7 @@ fråka om ja pära priten.
 Te vara jävlika token, pliva prankad av snoken
 traga satan åt skogen, å åka Luleåkroken.
 Sitta inne halva åren, pliva krå uti håren
-nappast röra på tåren, å komma baka först på våren.', 'Text: & musik: Liikavaara-Frans'),
+nappast röra på tåren, å komma baka först på våren.', 'Text och musik: Liikavaara-Frans'),
   ('what-shall-we-do', 'What shall we do...', 118, 'Övriga visor', NULL, 'What shall we do with the drunken sailor?
 What shall we do with the drunken sailor?
 What shall we do with the drunken sailor
@@ -1905,8 +1782,7 @@ mockar, gräver och bär,
 går bak mina oxar,
 hojtar, visslar och svär.
 Jag är fattig bonddräng
-o
-ch jag tuggar mitt snus.
+och jag tuggar mitt snus.
 Och när lörda''n kommer
 vill jag ta mig ett rus.
 Sen, när jag bli''t livad
@@ -1921,11 +1797,11 @@ har du kysst din mor på kinden,
 har du druckit ur ditt brännvin, så sjung hej åå!
 Hej å hå, jungman Jansson,
 är du rädd din lilla snärta
-ska bedraga dej, bedraga dej och för en annanlå?
+ska bedraga dej, bedraga dej och för en annan gå?
 Och som morgonstjärnor blinka,
 säj, så bultar väl ditt hjärta,
 vänd din näsa rätt mot stormen och sjung hej å hå!
-Hej å hå, jungman Jansson, kanske ödeslottenaller
+Hej å hå, jungman Jansson, kanske ödeslotten faller
 ej bland kvinnfolk,
 men bland hajarna i Söderhaven blå?
 Kanske döden står och lurar bakom trasiga koraller
@@ -2020,53 +1896,56 @@ när man sitter under stjärnorna,
 kan höra festens skratt.
 Jag trivs bäst i fred och frihet,
 för både kropp och själ.', 'Text & musik: Ulf Lundell'),
-  ('stad-i-ljus', 'Stad i ljus', 125, 'Övriga visor', NULL, 'Min resa var mot solen, långt bortom alla slutna
-rum,
-Där allting är oändligt, och alla gränser har förevigt
-suddats ut.
+  ('stad-i-ljus', 'Stad i ljus', 125, 'Övriga visor', NULL, 'Min resa var mot solen, långt bortom alla slutna rum,
+Där allting är oändligt, och alla gränser har förevigt suddats ut.
 Jag ville se miraklet, och höra ord som föder liv,
-Bli buren av en styrka, som bara växer när jag anat
-mitt motiv.
+Bli buren av en styrka, som bara växer när jag anat mitt motiv.
+
 Stad i ljus, i ett land utan namn,
 Ge mig liv, där allting föds på nytt.
-Och så när allt förändrats, när tiden inte längre
-finns,
+
+Och så när allt förändrats, när tiden inte längre finns,
 Så ser jag oss tillsammans, och då är resan slut,
 Det enda som vi minns.
+
 Stad i ljus, i ett land utan namn,
 Ge mig liv, där allting föds på nytt.
 Stad i ljus, i ett land utan namn,
-Ge, ge mig liv, där allting föds på nytt.', 'Text och musik : Py Bäckman'),
+Ge, ge mig liv, där allting föds på nytt.', 'Text och musik: Py Bäckman'),
   ('don-t-look-back-in-anger', 'Don’t look back in anger', 126, 'Övriga visor', NULL, 'Slip inside the eye of your mind
 Don''t you know you might find
 A better place to play?
-You
-said that you''d never been
-Bu
-t all the things that you''ve seen
+You said that you''d never been
+But all the things that you''ve seen
 Will slowly fade away
+
 So I start a revolution from my bed
 ''Cause you said the brains I had went to my head
 Step outside, summertime''s in bloom
 Stand up beside the fireplace
 Take that look from off your face
 You ain''t ever gonna burn my heart out
+
 And so, Sally can wait
 She knows it''s too late as we''re walkin'' on by
 Her soul slides away
 "But don''t look back in anger," I heard you say
+
 Take me to the place where you go
 Where nobody knows
 If it''s night or day
 Please don''t put your life in the hands
 Of a rock ''n'' roll band
 Who''ll throw it all away
+
 I’m gonna start a revolution...
 And so, Sally can wait...
-Gittarsolo
+
+[Gitarrsolo]
+
 And so, Sally can wait...
 And so, Sally can wait...
-But don’t lock back anger
+Don’t look back in anger
 Don’t look back in anger
 I heard you say
 At least not today', 'Text och musik : Oasis')

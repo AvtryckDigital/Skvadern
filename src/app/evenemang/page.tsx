@@ -1,44 +1,29 @@
 import Image from "next/image";
 
+export const metadata = {
+  title: "Evenemang | Skvaderns Hembygdsförening",
+  description:
+    "Skvaderns evenemang, SkvaderSpel och traditioner vid Norrlands nation i Uppsala.",
+};
+
 export default function Evenemang() {
   return (
     <div style={{ backgroundColor: "var(--bg)" }}>
-      {/* Hero */}
-      <section className="relative h-64 flex items-center justify-center overflow-hidden">
-        <Image
-          src="/images/patron_evenemang.jpg"
-          alt="Evenemang"
-          fill
-          className="object-cover object-[50%_60%]" //justera första % för horisontell, andra % för vertikal
-          priority
-        />
-        <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.55)" }} />
-        <div className="relative z-10 text-center px-6">
-          <h1
-            className="text-5xl font-bold text-white"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+      {/* Hero Header */}
+      <section
+        className="relative border-b py-20 px-6"
+        style={{ borderColor: "var(--border)" }}
+      >
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="eyebrow mb-3">Vår verksamhet</p>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-[#F4ECE1]">
             Evenemang
           </h1>
-        </div>
-      </section>
-
-      {/* Vår verksamhet */}
-      <section className="py-16 px-6 border-b" style={{ borderColor: "var(--border)" }}>
-        <div className="max-w-2xl mx-auto text-center">
-          <p className="text-xs uppercase tracking-[0.3em] mb-3" style={{ color: "var(--gold)" }}>
-            Vår verksamhet
-          </p>
-          <p
-            className="text-lg leading-relaxed"
-            style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-          >
-            Kärnan i Skvaderns verksamhet är de beryktade Skvaderspelen. Där får bröderna,
-            efter en ljuvlig måltid tillagad av Br. Barkborre och Br. Pinnpojke, slipa på sin
-            retoriska förmåga inför Patron. Förutom Spelen avnjuter även herrföreningarna
-            sällskapet av nationens damföreningar på diverse samsittningar. De bröder som
-            arbetat hårt för föreningen, och kanhända framförallt under Skvaderdam, har även
-            möjlighet att få följa med på föreningens beryktade kulturresa.
+          <p className="editorial-text text-base sm:text-lg leading-relaxed max-w-2xl mx-auto text-[#CFC4B4]">
+            <em>
+              Kärnan i Skvaderns verksamhet är de beryktade Skvaderspelen, samsittningar
+              med nationens damföreningar och föreningens anrika traditioner vid Norrlands nation.
+            </em>
           </p>
         </div>
       </section>
@@ -46,20 +31,14 @@ export default function Evenemang() {
       {/* Skvaderspelet */}
       <section id="skvaderspel" className="py-20 px-6">
         <div className="max-w-5xl mx-auto">
-          <p className="text-xs uppercase tracking-[0.3em] mb-2" style={{ color: "var(--gold)" }}>
-            Årsåterkommande
+          <p className="eyebrow mb-2">
+            Spel
           </p>
-          <h2
-            className="text-4xl font-bold mb-3"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h2 className="text-4xl font-bold mb-3">
             Vad innebär SkvaderSpel?
           </h2>
           <div className="w-10 h-px mb-6" style={{ backgroundColor: "var(--gold)" }} />
-          <p
-            className="text-base leading-relaxed mb-12 max-w-2xl"
-            style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-          >
+          <p className="editorial-text text-base leading-relaxed mb-12 max-w-2xl">
             Ett SkvaderSpel består av tre faser varav det börjar med en middag. Bröderna
             förbereder sig inför kommande debatter medan matkordinatorerna presenterar rätterna
             och sjunger &ldquo;Var Skvader&rdquo; när maten bärs in.
@@ -114,28 +93,25 @@ export default function Evenemang() {
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="relative h-64 overflow-hidden">
             <Image
-              src="/images/samsittning-rymden-ypsilon-e1695761490430.jpg"
+              src="/images/samsittning.jpg"
               alt="Samsittning"
               fill
               className="object-cover"
             />
           </div>
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] mb-2" style={{ color: "var(--gold)" }}>
+            <p className="eyebrow mb-2">
               Socialt
             </p>
-            <h2
-              className="text-3xl font-bold mb-3"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
+            <h2 className="text-3xl font-bold mb-3">
               Samsittningar
             </h2>
             <div className="w-10 h-px mb-5" style={{ backgroundColor: "var(--gold)" }} />
-            <p className="leading-relaxed text-sm mb-3" style={{ color: "var(--text-mid)" }}>
+            <p className="editorial-text text-sm mb-3">
               En Skvader trivs bäst i gott sällskap. Med utsökt mat och dryck avnjuter vi
               ofta kvällstimmarna tillsammans med de andra sociala föreningarna på nationen.
             </p>
-            <p className="leading-relaxed text-sm" style={{ color: "var(--text-mid)" }}>
+            <p className="editorial-text text-sm">
               Dessa tillställningar speglar föreningens övertygelse om att gott
               kamratskap inte stannar vid föreningens egna bröder.
             </p>
@@ -147,19 +123,19 @@ export default function Evenemang() {
       <section id="ofvriga" className="py-20 px-6 border-t" style={{ borderColor: "var(--border)" }}>
         <div className="max-w-5xl mx-auto">
           <div className="mb-10">
-            <p className="text-xs uppercase tracking-[0.3em] mb-2" style={{ color: "var(--gold)" }}>
+            <p className="eyebrow mb-2">
               Med mera
             </p>
-            <h2
-              className="text-3xl font-bold"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
+            <h2 className="text-3xl font-bold">
               Öfvriga tillställningar
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
             {[
               { icon: "🗺️", title: "Kulturresa", desc: "De bröder som arbetat hårt för föreningen, och kanhända framförallt under Skvaderdam, har möjlighet att få följa med på föreningens beryktade kulturresa." },
+              { icon: "♠️", title: "Pokerkväll", desc: "En skvader kan ibland vara finurlig och svår att läsa. Detta lämpar sig mycket väl till poker, något som utövas när tid finnes." },
+              { icon: "🧹", title: "Städdag", desc: "Skvadrar ägnar sig även åt de mindre stimulerande aktiviteterna, då detta är något som behöver göras för att hålla nationen ren och prydlig." },
+
               { icon: "🎙️", title: "Öfvriga aktiviteter", desc: "En skvader är ett mångfacetterat djur som gillar att ägna sig åt alla typer av stimulerande aktiviteter." },
             ].map((item) => (
               <div
@@ -169,7 +145,7 @@ export default function Evenemang() {
               >
                 <div className="text-2xl">{item.icon}</div>
                 <div>
-                  <h3 className="font-semibold mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <h3 className="font-semibold mb-1">
                     {item.title}
                   </h3>
                   <p className="text-sm" style={{ color: "var(--text-mid)" }}>{item.desc}</p>

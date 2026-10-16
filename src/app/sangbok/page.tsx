@@ -14,22 +14,13 @@ export default async function SongbookPage() {
       {/* Header */}
       <section className="py-20 px-6 border-b" style={{ borderColor: "var(--border)" }}>
         <div className="max-w-4xl mx-auto text-center">
-          <p
-            className="text-xs uppercase tracking-[0.3em] mb-3"
-            style={{ color: "var(--gold)" }}
-          >
+          <p className="eyebrow mb-3">
             Sjung med
           </p>
-          <h1
-            className="text-5xl font-bold mb-6"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h1 className="text-5xl font-bold mb-6">
             Sångbok
           </h1>
-          <p
-            className="text-base leading-relaxed max-w-xl mx-auto"
-            style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-          >
+          <p className="editorial-text text-base leading-relaxed max-w-xl mx-auto">
             <em>
               Skvaderns visor, punsch- och snapsvisor till fest, sittning och SkvaderSpel.
             </em>
@@ -50,20 +41,11 @@ export default async function SongbookPage() {
             >
               <h2
                 className="text-2xl font-bold mb-3"
-                style={{
-                  fontFamily: "'Playfair Display', serif",
-                  color: "var(--text-dark)",
-                }}
+                style={{ color: "var(--text-dark)" }}
               >
                 Sångboken fylls på
               </h2>
-              <p
-                className="text-sm leading-relaxed"
-                style={{
-                  fontFamily: "'Lora', serif",
-                  color: "var(--text-mid)",
-                }}
-              >
+              <p className="editorial-text text-sm leading-relaxed">
                 Inga sånger har lagts upp ännu. Lägg till sånger i adminpanelen eller kom tillbaka snart!
               </p>
             </div>

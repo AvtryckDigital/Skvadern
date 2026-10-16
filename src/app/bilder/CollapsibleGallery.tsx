@@ -22,13 +22,10 @@ export function CollapsibleGallery({ category, images, defaultOpen = false }: Pr
           onClick={() => setIsOpen(!isOpen)}
         >
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] mb-2" style={{ color: "var(--gold)" }}>
+            <p className="eyebrow mb-2">
               Galleri
             </p>
-            <h2
-              className="text-2xl sm:text-3xl font-bold transition-colors group-hover:text-[var(--gold)]"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
+            <h2 className="text-2xl sm:text-3xl font-bold transition-colors group-hover:text-[var(--gold)]">
               {category}
             </h2>
           </div>

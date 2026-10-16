@@ -31,19 +31,13 @@ export default function BliEnSkvader() {
       {/* Header */}
       <section className="py-20 px-6 border-b" style={{ borderColor: "var(--border)" }}>
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-xs uppercase tracking-[0.3em] mb-3" style={{ color: "var(--gold)" }}>
+          <p className="eyebrow mb-3">
             Välkommen in
           </p>
-          <h1
-            className="text-5xl font-bold mb-6"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h1 className="text-5xl font-bold mb-6">
             Bli en Skvader
           </h1>
-          <p
-            className="text-base leading-relaxed"
-            style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-          >
+          <p className="editorial-text text-base leading-relaxed">
             <em>
               Är du student på Uppsala Universitet och bär 
               Medelpads färger i hjärtat? Då kan du vara en av oss.
@@ -55,13 +49,10 @@ export default function BliEnSkvader() {
       {/* Info */}
       <section className="py-16 px-6 border-b" style={{ borderColor: "var(--border)", backgroundColor: "var(--bg-subtle)" }}>
         <div className="max-w-3xl mx-auto">
-          <p className="text-xs uppercase tracking-[0.3em] mb-4" style={{ color: "var(--gold)" }}>
+          <p className="eyebrow mb-4">
             Vem kan bli Skvader?
           </p>
-          <h2
-            className="text-3xl font-bold mb-4"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h2 className="text-3xl font-bold mb-4">
             Kriterier för medlemskap
           </h2>
           <div className="w-10 h-px mb-8" style={{ backgroundColor: "var(--gold)" }} />
@@ -89,16 +80,10 @@ export default function BliEnSkvader() {
                 className="p-6 border"
                 style={{ borderColor: "var(--border)", borderTop: "2px solid var(--gold)" }}
               >
-                <div
-                  className="text-4xl font-bold mb-3 opacity-20"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
+                <div className="font-display text-4xl font-bold mb-3 opacity-20">
                   {item.num}
                 </div>
-                <h3
-                  className="text-base font-semibold mb-2"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
+                <h3 className="text-base font-semibold mb-2">
                   {item.title}
                 </h3>
                 <p className="text-sm leading-relaxed" style={{ color: "var(--text-mid)" }}>
@@ -108,10 +93,7 @@ export default function BliEnSkvader() {
             ))}
           </div>
 
-          <p
-            className="text-sm leading-relaxed"
-            style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-          >
+          <p className="editorial-text text-sm leading-relaxed">
             Nya Skvadrar antas formellt vid ett SkvaderSpel. Om du är intresserad så kan du skicka ett meddelande i formuläret nedan.  <br />Broder Nitare
             återkommer till dig med mer information.
           </p>
@@ -121,13 +103,10 @@ export default function BliEnSkvader() {
       {/* Contact form */}
       <section className="py-16 px-6">
         <div className="max-w-2xl mx-auto">
-          <p className="text-xs uppercase tracking-[0.3em] mb-4" style={{ color: "var(--gold)" }}>
+          <p className="eyebrow mb-4">
             Intresseanmälan
           </p>
-          <h2
-            className="text-3xl font-bold mb-4"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h2 className="text-3xl font-bold mb-4">
             Skriv till oss
           </h2>
           <div className="w-10 h-px mb-8" style={{ backgroundColor: "var(--gold)" }} />
@@ -137,10 +116,7 @@ export default function BliEnSkvader() {
               className="p-8 border text-center"
               style={{ borderColor: "var(--gold)", backgroundColor: "var(--bg-subtle)" }}
             >
-              <p
-                className="text-xl font-semibold mb-2"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
+              <p className="font-display text-xl font-semibold mb-2">
                 Tack för ditt meddelande
               </p>
               <p className="text-sm" style={{ color: "var(--text-mid)" }}>

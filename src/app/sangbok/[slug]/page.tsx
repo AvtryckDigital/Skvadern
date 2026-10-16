@@ -52,31 +52,19 @@ export default async function SongPage({ params }: Props) {
             <span>Tillbaka till Sångboken</span>
           </Link>
 
-          <p
-            className="text-xs uppercase tracking-[0.3em] mb-3 font-semibold"
-            style={{ color: "var(--gold)" }}
-          >
+          <p className="eyebrow mb-3">
             {song.number != null ? `Nr ${song.number}` : "Sångbok"}
           </p>
 
           <h1
             className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-4"
-            style={{
-              fontFamily: "'Playfair Display', serif",
-              color: "var(--text-dark)",
-            }}
+            style={{ color: "var(--text-dark)" }}
           >
             {song.title}
           </h1>
 
           {intro && (
-            <p
-              className="text-sm sm:text-base leading-relaxed italic"
-              style={{
-                fontFamily: "'Lora', serif",
-                color: "var(--text-mid)",
-              }}
-            >
+            <p className="editorial-text text-sm sm:text-base leading-relaxed italic">
               {intro}
             </p>
           )}
@@ -105,20 +93,11 @@ export default async function SongPage({ params }: Props) {
             >
               <h2
                 className="text-lg font-bold mb-2"
-                style={{
-                  fontFamily: "'Playfair Display', serif",
-                  color: "var(--gold)",
-                }}
+                style={{ color: "var(--gold)" }}
               >
                 Kommentar
               </h2>
-              <p
-                className="text-sm leading-relaxed whitespace-pre-line"
-                style={{
-                  fontFamily: "'Lora', serif",
-                  color: "var(--text-mid)",
-                }}
-              >
+              <p className="editorial-text text-sm leading-relaxed whitespace-pre-line">
                 {song.notes}
               </p>
             </div>

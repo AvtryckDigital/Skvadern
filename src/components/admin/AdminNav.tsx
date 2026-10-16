@@ -8,6 +8,7 @@ import {
   CalendarDays,
   Images,
   BookOpen,
+  Users,
   ExternalLink,
   LogOut,
   Menu,
@@ -25,7 +26,7 @@ const NAV_ITEMS = [
   {
     href: "/admin/bilder",
     aliases: [],
-    label: "Bilder",
+    label: "Galleri",
     icon: Images,
   },
   {
@@ -33,6 +34,12 @@ const NAV_ITEMS = [
     aliases: [],
     label: "Sångbok",
     icon: BookOpen,
+  },
+  {
+    href: "/admin/styrelsen",
+    aliases: [],
+    label: "Styrelsen",
+    icon: Users,
   },
 ];
 

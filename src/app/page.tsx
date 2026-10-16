@@ -31,13 +31,10 @@ export default async function Home() {
               />
             </div>
           </div>
-          <p className="text-sm uppercase tracking-[0.15em] mb-4 font-medium" style={{ color: "#C9A050", fontSize: 14 }}>
+          <p className="eyebrow mb-4 text-base">
             Obesfvärad elegance sedan 1950
           </p>
-          <h1
-            className="text-5xl md:text-7xl font-bold leading-tight mb-6 text-white"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6 text-white">
             Skvaderns<br />
             <em className="font-normal">herrförening</em>
           </h1>
@@ -49,19 +46,13 @@ export default async function Home() {
       <section className="py-20 px-6" style={{ backgroundColor: "var(--bg-subtle)" }}>
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-6">
-            <p className="text-xs uppercase tracking-[0.3em] mb-3" style={{ color: "var(--gold)" }}>
+            <p className="eyebrow mb-3">
               Vad vi gör
             </p>
-            <h2
-              className="text-4xl font-bold mb-6"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
+            <h2 className="text-4xl font-bold mb-6">
               Våra evenemang
             </h2>
-            <p
-              className="text-lg leading-relaxed max-w-2xl mx-auto mb-12"
-              style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-            >
+            <p className="editorial-text text-lg leading-relaxed max-w-2xl mx-auto mb-12">
               <em>Vältalig, välklädd, ödmjuk &mdash; hur spenderar en Skvader sin tid på nationen?</em>
             </p>
           </div>
@@ -110,10 +101,7 @@ export default async function Home() {
                   />
                 </div>
                 <div className="p-8">
-                  <h3
-                    className="text-xl font-semibold mb-2"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
-                  >
+                  <h3 className="text-xl font-semibold mb-2">
                     {item.title}
                   </h3>
                   <p className="text-sm leading-relaxed" style={{ color: "var(--text-mid)" }}>
@@ -150,10 +138,7 @@ export default async function Home() {
               ))}
             </div>
           ) : (
-            <p
-              className="max-w-xl text-base italic"
-              style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-            >
+            <p className="editorial-text max-w-xl text-base italic">
               Inga datum är satta just nu. Nya aktiviteter och sittningar läggs upp här så snart de är bestämda.
             </p>
           )}
@@ -172,20 +157,17 @@ export default async function Home() {
             className="w-full h-80 object-cover object-center"
           />
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] mb-4" style={{ color: "var(--gold)" }}>
+            <p className="eyebrow mb-4">
               Bakgrund
             </p>
             <h2
               className="text-4xl md:text-5xl font-bold mb-6"
-              style={{ fontFamily: "'Playfair Display', serif", color: "var(--text-dark)" }}
+              style={{ color: "var(--text-dark)" }}
             >
               Vår historia
             </h2>
             <div className="w-12 h-px mb-8" style={{ backgroundColor: "var(--gold)" }} />
-            <p
-              className="text-base leading-relaxed mb-5"
-              style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-            >
+            <p className="editorial-text text-base leading-relaxed mb-5">
               Det är 40-tal och vi befinner oss i Uppsala på Norrlands Nation. Under en längre tid
               hade det funnits en önskan om att Norrlands Nations medelpadingar skulle kunna träffas
               och umgås i en egen förening. Som ett resultat av denna önskan grundades föreningen
@@ -193,10 +175,7 @@ export default async function Home() {
               ett gott kamratskap och främja intresset för hembygden&rdquo;. Sedan dess hade det
               kunnat hända mycket, men föreningens syfte står starkt kvar.
             </p>
-            <p
-              className="text-base leading-relaxed mb-8"
-              style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-            >
+            <p className="editorial-text text-base leading-relaxed mb-8">
               Skvadern är en förening öppen för alla studenter vid Norrlands Nation med anknytning
               till Medelpad, vare sig det är i form av härstamning eller om det är så att man kan
               färgerna i Medelpads flagga. Den Skvadrianska gemenskapen praktiserar inga geografiska
@@ -218,13 +197,10 @@ export default async function Home() {
       <section className="py-20 px-6" style={{ backgroundColor: "var(--bg-subtle)" }}>
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-xs uppercase tracking-[0.3em] mb-3" style={{ color: "var(--gold)" }}>
+            <p className="eyebrow mb-3">
               Bröder berättar
             </p>
-            <h2
-              className="text-4xl font-bold"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
+            <h2 className="text-4xl font-bold">
               Hör deras berättelse
             </h2>
           </div>
@@ -274,15 +250,12 @@ export default async function Home() {
                   </p>
                 </div>
                 <div
-                  className="text-3xl mb-3 leading-none"
-                  style={{ color: "var(--gold)", fontFamily: "'Playfair Display', serif" }}
+                  className="font-display text-3xl mb-3 leading-none"
+                  style={{ color: "var(--gold)" }}
                 >
                   &ldquo;
                 </div>
-                <p
-                  className="text-base leading-relaxed italic"
-                  style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-                >
+                <p className="editorial-text text-base leading-relaxed italic">
                   {item.quote}
                 </p>
               </div>
@@ -298,7 +271,7 @@ export default async function Home() {
             {[
               { href: "/evenemang", icon: <CalendarDays size={24} />, title: "Evenemang", desc: "Aktiviteter och tillställningar" },
               { href: "/historia", icon: <BookOpen size={24} />, title: "Om oss", desc: "Föreningens anor sedan 1950" },
-              { href: "/bilder", icon: <Camera size={24} />, title: "Bilder", desc: "Foton från minnesvärda stunder" },
+              { href: "/galleri", icon: <Camera size={24} />, title: "Galleri", desc: "Foton från minnesvärda stunder" },
             ].map((item) => (
               <Link
                 key={item.href}

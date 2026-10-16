@@ -30,17 +30,14 @@ export default function SectionTitle({
       />
       <div>
         {eyebrow && (
-          <p
-            className="text-xs uppercase tracking-[0.25em] mb-1.5 font-semibold"
-            style={{ color: "var(--gold)" }}
-          >
+          <p className="eyebrow mb-1.5">
             {eyebrow}
           </p>
         )}
         <h2
           id={id}
           className="text-3xl sm:text-4xl font-bold"
-          style={{ fontFamily: "'Playfair Display', serif", color: "var(--text-dark)" }}
+          style={{ color: "var(--text-dark)" }}
         >
           {title}
         </h2>

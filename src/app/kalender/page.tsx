@@ -33,22 +33,13 @@ export default async function Kalender() {
       {/* Header */}
       <section className="py-20 px-6 border-b" style={{ borderColor: "var(--border)" }}>
         <div className="max-w-4xl mx-auto text-center">
-          <p
-            className="text-xs uppercase tracking-[0.3em] mb-3"
-            style={{ color: "var(--gold)" }}
-          >
+          <p className="eyebrow mb-3">
             Kommande aktiviteter
           </p>
-          <h1
-            className="text-5xl font-bold mb-6"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h1 className="text-5xl font-bold mb-6">
             Kalendarium
           </h1>
-          <p
-            className="text-base leading-relaxed max-w-xl mx-auto"
-            style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-          >
+          <p className="editorial-text text-base leading-relaxed max-w-xl mx-auto">
             <em>
               Håll koll på föreningens stundande tillställningar nedan. <br />Prenumerera på kalendern för att inte missa nästa aktivitet.
             </em>
@@ -69,7 +60,7 @@ export default async function Kalender() {
             }}
           >
             <span style={{ color: "var(--gold)", fontWeight: 600, letterSpacing: "0.05em" }}>OBS!</span>
-            <span style={{ color: "var(--text-mid)", fontFamily: "'Lora', serif", fontStyle: "italic" }}>
+            <span className="editorial-text italic">
               Tiderna nedan kan vara preliminära. Exakta tider och detaljer finns alltid i Facebook-evenemanget.
             </span>
           </div>
@@ -83,15 +74,12 @@ export default async function Kalender() {
               }}
             >
               <p
-                className="text-2xl font-bold mb-2"
-                style={{ fontFamily: "'Playfair Display', serif", color: "var(--text-dark)" }}
+                className="font-display text-2xl font-bold mb-2"
+                style={{ color: "var(--text-dark)" }}
               >
                 Inga kommande aktiviteter just nu
               </p>
-              <p
-                className="text-sm"
-                style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-              >
+              <p className="editorial-text text-sm">
                 Nya datum läggs upp här så snart de är bestämda.
               </p>
             </div>

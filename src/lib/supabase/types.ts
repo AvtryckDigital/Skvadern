@@ -28,3 +28,14 @@ export type Song = {
   created_at?: string;
 };
 
+export type BoardMember = {
+  id: string | number;
+  role: string;
+  role_description: string | null;
+  name: string;
+  email: string | null;
+  image: string | null;
+  sort_order: number;
+  created_at?: string;
+};
+

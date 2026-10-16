@@ -1,52 +1,48 @@
 import Image from "next/image";
 
+export const metadata = {
+  title: "Historia | Skvaderns Hembygdsförening",
+  description:
+    "Skvaderns historia, grundande 1950 och ursprunget till skvaderdjuret i Medelpad.",
+};
+
 export default function Historia() {
   return (
     <div style={{ backgroundColor: "var(--bg)" }}>
-      {/* Hero */}
-      <section className="relative h-64 flex items-center justify-center overflow-hidden">
-        <Image
-          src="/images/SuM-foto021826-1.jpg"
-          alt="Rudolf Granberg med skvaderdjuret. Foto: Norrlandsbild/Ragge Ellefsson, Sundsvalls museum"
-          fill
-          className="object-cover object-[50%_67%]"
-          priority
-        />
-        <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.55)" }} />
-        <div className="relative z-10 text-center px-6">
-          <h1
-            className="text-5xl font-bold text-white"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+      {/* Hero Header */}
+      <section
+        className="relative border-b py-20 px-6"
+        style={{ borderColor: "var(--border)" }}
+      >
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="eyebrow mb-3">Anor & Tradition</p>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-[#F4ECE1]">
             Historia
           </h1>
+          <p className="editorial-text text-base sm:text-lg leading-relaxed max-w-2xl mx-auto text-[#CFC4B4]">
+            <em>
+              Berättelsen om Skvaderns tillkomst hösten 1950, skvaderdjurets ursprung
+              och mer än sju decennier av gemenskap vid Norrlands nation.
+            </em>
+          </p>
         </div>
       </section>
 
       {/* Intro */}
       <section className="py-20 px-6 border-b" style={{ borderColor: "var(--border)" }}>
         <div className="max-w-3xl mx-auto">
-          <p className="text-xs uppercase tracking-[0.3em] mb-3" style={{ color: "var(--gold)" }}>
+          <p className="eyebrow mb-3">
             Om föreningen
           </p>
-          <h2
-            className="text-3xl font-bold mb-4"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h2 className="text-3xl font-bold mb-4">
             Hembygdsföreningen Skvadern
           </h2>
           <div className="w-10 h-px mb-6" style={{ backgroundColor: "var(--gold)" }} />
-          <p
-            className="leading-relaxed mb-4"
-            style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-          >
+          <p className="editorial-text leading-relaxed mb-4">
             Med inspiration från broder Bengt-Olov Horn kommer här ett försök att på ett så
             korrekt sätt som möjligt återge Skvaderns ursprung och historia.
           </p>
-          <p
-            className="leading-relaxed mb-4"
-            style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-          >
+          <p className="editorial-text leading-relaxed mb-4">
             Det vi alla vet är att Skvadern bildades hösten 1950 i KFUM-huset vid Fyrisån.
             Försök gjordes dock redan året innan då det bildades en interimsstyrelse, men det
             försöket misslyckades. Däremot får vi uttrycka vår stora glädje till initiativtagaren
@@ -59,30 +55,21 @@ export default function Historia() {
       <section className="py-20 px-6 border-b" style={{ borderColor: "var(--border)" }}>
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] mb-3" style={{ color: "var(--gold)" }}>
+            <p className="eyebrow mb-3">
               Symbolen
             </p>
-            <h2
-              className="text-3xl font-bold mb-4"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
+            <h2 className="text-3xl font-bold mb-4">
               Skvaderdjuret
             </h2>
             <div className="w-10 h-px mb-5" style={{ backgroundColor: "var(--gold)" }} />
-            <p
-              className="leading-relaxed mb-4"
-              style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-            >
+            <p className="editorial-text leading-relaxed mb-4">
               Utan större tvekan är Skvadern, skapad av konservator Rudolf Granberg, den symbol
               som starkast förknippas med Medelpad. Dess härkomst går att spåra ända till antikens
               dagar i Petronii verk <em>Satyricon</em> där två studenter blev bjudna på middag av
               en rik uppkomling i samhället. Där bjöds de på diverse rätter men en av dem var en
               hare försedd med vingar, för att efterlikna Pegasus.
             </p>
-            <p
-              className="leading-relaxed"
-              style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-            >
+            <p className="editorial-text leading-relaxed">
               Vissa vill göra gällande att detta låg till grund för Granberg då han skapade
               Skvadern. Andra vill göra gällande att det är en jakthistoria från slutet av 1800-talet,
               där jägarna skröt för varandra om vem som skjutit det märkligaste djuret, som inspirerat
@@ -105,20 +92,14 @@ export default function Historia() {
       {/* De tidiga åren */}
       <section className="py-20 px-6 border-b" style={{ borderColor: "var(--border)" }}>
         <div className="max-w-3xl mx-auto">
-          <p className="text-xs uppercase tracking-[0.3em] mb-3" style={{ color: "var(--gold)" }}>
+          <p className="eyebrow mb-3">
             Tidigt 1950-tal
           </p>
-          <h2
-            className="text-3xl font-bold mb-4"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h2 className="text-3xl font-bold mb-4">
             De tidiga åren
           </h2>
           <div className="w-10 h-px mb-6" style={{ backgroundColor: "var(--gold)" }} />
-          <p
-            className="leading-relaxed mb-4"
-            style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-          >
+          <p className="editorial-text leading-relaxed mb-4">
             Under de tidiga åren genomförde Skvadern en konstutställning som vid sidan av
             Sundsvalls Tidning och Uppsala Nya Tidning gav eko i de rikstäckande tidningarna och
             satte Skvadern på Sverigekartan. Skvadern, under ledning av Skyddspatron Knubben,
@@ -129,19 +110,13 @@ export default function Historia() {
             detta visade det sig att den unga föreningen skulle överleva de första svåra åren och
             leva kvar länge inom Norrlands nation.
           </p>
-          <p
-            className="leading-relaxed mb-4"
-            style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-          >
+          <p className="editorial-text leading-relaxed mb-4">
             Skvaderns verksamhet kan delas upp i två delar: dels yttre manifestationer liknande
             de ovan som alla kan bevista, dels privata sammankomster som är till för bröderna i
             föreningen. Det intressanta är att brädgården är äldre än vad Spelen är i hänseende
             till namn.
           </p>
-          <p
-            className="leading-relaxed"
-            style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-          >
+          <p className="editorial-text leading-relaxed">
             Andra kulturella evenemang som genomförts i Skvaderns regi är en visafton med
             Visans vänner från Sundsvall och en konsert med världsberömda operasångerskan
             Hjördis Schymberg (från Alnö).
@@ -152,29 +127,20 @@ export default function Historia() {
       {/* Skvaderns verksamhet */}
       <section className="py-20 px-6 border-b" style={{ borderColor: "var(--border)" }}>
         <div className="max-w-3xl mx-auto">
-          <p className="text-xs uppercase tracking-[0.3em] mb-3" style={{ color: "var(--gold)" }}>
+          <p className="eyebrow mb-3">
             Organisation
           </p>
-          <h2
-            className="text-3xl font-bold mb-4"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h2 className="text-3xl font-bold mb-4">
             Skvaderns verksamhet
           </h2>
           <div className="w-10 h-px mb-6" style={{ backgroundColor: "var(--gold)" }} />
-          <p
-            className="leading-relaxed mb-4"
-            style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-          >
+          <p className="editorial-text leading-relaxed mb-4">
             Fram till 1957 benämndes styrelsen just styrelsen och hade de traditionella
             styrelseposterna ordförande, sekreterare etc. Visserligen finns det alternativa
             namn på styrelseposterna redan på det första protokollet från 15 december 1950
             men dopet, som inspirerades av sågverkstiden, skedde alltså först sju år senare.
           </p>
-          <p
-            className="leading-relaxed"
-            style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
-          >
+          <p className="editorial-text leading-relaxed">
             Namnet SkvaderSpel uppkom 1962 efter en tävling bland bröderna, innan dess
             kallades det för skvadermöte. På senare år har det även tagits beslut att Spel
             alltid ska skrivas med stort S för att markera vikten av dess innebörd.
@@ -186,13 +152,10 @@ export default function Historia() {
       <section className="py-20 px-6">
         <div className="max-w-3xl mx-auto">
           <div className="mb-14">
-            <p className="text-xs uppercase tracking-[0.3em] mb-3" style={{ color: "var(--gold)" }}>
+            <p className="eyebrow mb-3">
               Kronologi
             </p>
-            <h2
-              className="text-3xl font-bold"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
+            <h2 className="text-3xl font-bold">
               Föreningens historia
             </h2>
           </div>
@@ -247,13 +210,10 @@ export default function Historia() {
                 </div>
                 <div className="pb-10">
                   <div className="w-2 h-2 rounded-full mt-1.5 mb-3" style={{ backgroundColor: "var(--gold)", marginLeft: "-1.25rem" }} />
-                  <h3
-                    className="text-lg font-semibold mb-1"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
-                  >
+                  <h3 className="text-lg font-semibold mb-1">
                     {item.title}
                   </h3>
-                  <p className="text-sm leading-relaxed" style={{ color: "var(--text-mid)" }}>
+                  <p className="editorial-text text-sm leading-relaxed">
                     {item.text}
                   </p>
                 </div>
@@ -266,16 +226,13 @@ export default function Historia() {
       {/* Jubileum */}
       <section className="py-16 px-6 border-t" style={{ borderColor: "var(--border)", backgroundColor: "var(--bg-subtle)" }}>
         <div className="max-w-2xl mx-auto text-center">
-          <p className="text-xs uppercase tracking-[0.3em] mb-3" style={{ color: "var(--gold)" }}>
+          <p className="eyebrow mb-3">
             2025
           </p>
-          <h2
-            className="text-3xl font-bold mb-4"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h2 className="text-3xl font-bold mb-4">
             75 år av tradition
           </h2>
-          <p className="text-sm leading-relaxed" style={{ color: "var(--text-mid)" }}>
+          <p className="editorial-text text-sm leading-relaxed">
             År 2025 firade Skvaderns Herrförening sitt 75-årsjubileum. Generationer
             av bröder har mötts kring middagsbordet och förhandlingsbordet — och
             traditionen lever vidare.
