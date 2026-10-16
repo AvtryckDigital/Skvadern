@@ -1,55 +1,30 @@
-import { unstable_cache } from "next/cache";
-import { createPublicClient } from "@/lib/supabase/public";
-import { CalendarDays, Clock, Tag, MapPin, FileText } from "lucide-react";
-import type { Activity } from "@/lib/supabase/types";
 import { SubscribeButtons } from "@/components/SubscribeButtons";
-
-const getActivities = unstable_cache(
-  async () => {
-    const supabase = createPublicClient();
-    const { data } = await supabase
-      .from("activities")
-      .select("*")
-      .order("date", { ascending: true })
-      .returns<Activity[]>();
-    return data ?? [];
-  },
-  ["activities"],
-  { tags: ["activities"] }
-);
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("sv-SE", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
-
-function formatAcademicTime(iso: string) {
-  const date = new Date(iso);
-  const hours = date.toLocaleTimeString("sv-SE", { hour: "2-digit" });
-  const minutes = date.getMinutes();
-  
-  if (minutes === 15) return `${hours} ak`;
-  if (minutes === 30) return `${hours} dk`;
-  if (minutes === 45) return `${hours} tk`;
-  
-  return date.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
-}
+import EventItem from "@/components/EventItem";
+import SectionTitle from "@/components/SectionTitle";
+import { getActivities, monthName, parseLocal, todayStockholm } from "@/lib/activities";
+import type { Activity } from "@/lib/supabase/types";
 
 export default async function Kalender() {
   const activities = await getActivities();
+  const today = todayStockholm();
 
-  const groupedActivities = activities.reduce((acc, activity) => {
-    const date = new Date(activity.date);
-    const monthYear = date.toLocaleDateString("sv-SE", { month: "long", year: "numeric" });
-    const capitalizedMonthYear = monthYear.charAt(0).toUpperCase() + monthYear.slice(1);
-    
-    if (!acc[capitalizedMonthYear]) {
-      acc[capitalizedMonthYear] = [];
+  const upcoming = activities.filter(
+    (a) => (a.end_date ?? a.date).slice(0, 10) >= today
+  );
+  const past = activities
+    .filter((a) => (a.end_date ?? a.date).slice(0, 10) < today)
+    .reverse();
+
+  const groupedActivities = upcoming.reduce((acc, activity) => {
+    const p = parseLocal(activity.date);
+    if (!p) return acc;
+    const name = monthName(p.m);
+    const monthYear = `${name.charAt(0).toUpperCase() + name.slice(1)} ${p.y}`;
+
+    if (!acc[monthYear]) {
+      acc[monthYear] = [];
     }
-    acc[capitalizedMonthYear].push(activity);
+    acc[monthYear].push(activity);
     return acc;
   }, {} as Record<string, Activity[]>);
 
@@ -84,13 +59,13 @@ export default async function Kalender() {
 
       {/* Event cards */}
       <section className="py-16 px-6">
-        <div className="max-w-4xl mx-auto flex flex-col gap-4">
-          <div 
-            className="px-5 py-3 mb-4 text-sm border flex items-start sm:items-center gap-3" 
-            style={{ 
-              borderColor: "var(--border)", 
+        <div className="max-w-4xl mx-auto flex flex-col gap-6">
+          <div
+            className="px-5 py-3 mb-2 text-sm border flex items-start sm:items-center gap-3"
+            style={{
+              borderColor: "var(--border)",
               backgroundColor: "var(--bg-subtle)",
-              borderLeft: "3px solid var(--gold)"
+              borderLeft: "3px solid var(--gold)",
             }}
           >
             <span style={{ color: "var(--gold)", fontWeight: 600, letterSpacing: "0.05em" }}>OBS!</span>
@@ -99,183 +74,71 @@ export default async function Kalender() {
             </span>
           </div>
 
-          {!activities || activities.length === 0 ? (
-            <p
-              className="text-center py-16 text-sm"
-              style={{ color: "var(--text-light)" }}
+          {upcoming.length === 0 ? (
+            <div
+              className="oxford-frame rounded-sm border p-12 text-center"
+              style={{
+                borderColor: "var(--border)",
+                backgroundColor: "var(--bg-subtle)",
+              }}
             >
-              Inga kommande aktiviteter just nu.
-            </p>
+              <p
+                className="text-2xl font-bold mb-2"
+                style={{ fontFamily: "'Playfair Display', serif", color: "var(--text-dark)" }}
+              >
+                Inga kommande aktiviteter just nu
+              </p>
+              <p
+                className="text-sm"
+                style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
+              >
+                Nya datum läggs upp här så snart de är bestämda.
+              </p>
+            </div>
           ) : (
-            Object.entries(groupedActivities).map(([monthYear, monthActivities]) => (
-              <div key={monthYear} className="mb-8 last:mb-0">
-                <h2 
-                  className="text-2xl font-bold mb-4" 
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
-                  {monthYear}
-                </h2>
-                <div className="flex flex-col gap-4">
-                  {monthActivities.map((event) => (
-                    <div
-                      key={event.id}
-                      className="border flex flex-col"
-                      style={{
-                        borderColor: "var(--border)",
-                        borderLeft: "3px solid var(--gold)",
-                        backgroundColor: "var(--bg-subtle)",
-                      }}
-                    >
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-0 p-3">
-                      {/* Aktivitet */}
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <Tag
-                          size={16}
-                          style={{ color: "var(--gold)" }}
-                          className="flex-shrink-0"
-                        />
-                        <div>
-                          <div
-                            className="text-xs uppercase tracking-widest mb-0.5"
-                            style={{ color: "var(--text-light)" }}
-                          >
-                            Aktivitet
-                          </div>
-                          <div
-                            className="text-sm font-medium"
-                            style={{ color: "var(--text-dark)" }}
-                          >
-                            {event.title}
-                          </div>
-                        </div>
-                      </div>
+            <div className="space-y-12">
+              {Object.entries(groupedActivities).map(([monthYear, monthActivities]) => (
+                <section key={monthYear} className="space-y-4">
+                  <SectionTitle title={monthYear} className="!mb-6" />
+                  <div className="flex flex-col gap-4">
+                    {monthActivities.map((event) => (
+                      <EventItem key={event.id} activity={event} href={null} />
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          )}
 
-               
-
-                      <div
-                        className="hidden sm:block w-px h-8 mx-6 flex-shrink-0"
-                        style={{ backgroundColor: "var(--border)" }}
-                      />
-
-                      {/* Datum */}
-                      <div className="flex items-center gap-3 sm:w-44 flex-shrink-0">
-                        <CalendarDays
-                          size={16}
-                          style={{ color: "var(--gold)" }}
-                          className="flex-shrink-0"
-                        />
-                        <div>
-                          <div
-                            className="text-xs uppercase tracking-widest mb-0.5"
-                            style={{ color: "var(--text-light)" }}
-                          >
-                            Datum
-                          </div>
-                          <div
-                            className="text-sm font-medium"
-                            style={{ color: "var(--text-dark)" }}
-                          >
-                            {formatDate(event.date)}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div
-                        className="hidden sm:block w-px h-8 mx-6 flex-shrink-0"
-                        style={{ backgroundColor: "var(--border)" }}
-                      />
-
-                      {/* Tid */}
-                      <div className="flex items-center gap-3 sm:w-28 flex-shrink-0">
-                        <Clock
-                          size={16}
-                          style={{ color: "var(--gold)" }}
-                          className="flex-shrink-0"
-                        />
-                        <div className="min-w-0">
-                          <div
-                            className="text-xs uppercase tracking-widest mb-0.5"
-                            style={{ color: "var(--text-light)" }}
-                          >
-                            Tid
-                          </div>
-                          <div
-                            className="text-sm font-semibold truncate"
-                            style={{
-                              fontFamily: "'Playfair Display', serif",
-                              color: "var(--text-dark)",
-                            }}
-                          >
-                            {formatAcademicTime(event.date)}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div
-                        className="hidden sm:block w-px h-8 mx-6 flex-shrink-0"
-                        style={{ backgroundColor: "var(--border)" }}
-                      />
-
-                      {/* Plats */}
-                      <div className="flex items-center gap-3 sm:w-52 flex-shrink-0">
-                        <MapPin
-                          size={16}
-                          style={{ color: "var(--gold)" }}
-                          className="flex-shrink-0"
-                        />
-                        <div>
-                          <div
-                            className="text-xs uppercase tracking-widest mb-0.5"
-                            style={{ color: "var(--text-light)" }}
-                          >
-                            Plats
-                          </div>
-                          <div
-                            className="text-sm"
-                            style={{ color: "var(--text-mid)" }}
-                          >
-                            <span style={{ color: "var(--text-dark)" }}>
-                              {event.location ?? "Meddelas senare"}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Beskrivning — visas bara om den finns */}
-                    {event.description && (
-                      <div
-                        className="flex items-start gap-3 px-6 pb-6 pt-4 border-t"
-                        style={{ borderColor: "var(--border)" }}
-                      >
-                        <FileText
-                          size={16}
-                          style={{ color: "var(--gold)" }}
-                          className="flex-shrink-0 mt-0.5"
-                        />
-                        <div>
-                          <div
-                            className="text-xs uppercase tracking-widest mb-1"
-                            style={{ color: "var(--text-light)" }}
-                          >
-                            Beskrivning
-                          </div>
-                          <p
-                            className="text-sm leading-relaxed"
-                            style={{
-                              color: "var(--text-dark)",
-                            }}
-                          >
-                            {event.description}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                    </div>
-                  ))}
-                </div>
+          {past.length > 0 && (
+            <details
+              className="oxford-frame group mt-12 rounded-sm border"
+              style={{
+                borderColor: "var(--border)",
+                backgroundColor: "var(--bg-subtle)",
+              }}
+            >
+              <summary
+                className="cursor-pointer list-none px-5 py-4 font-semibold text-xs uppercase tracking-wider marker:hidden flex items-center justify-between"
+                style={{ color: "var(--gold)" }}
+              >
+                <span className="flex items-center gap-2">
+                  <span className="inline-block transition-transform group-open:rotate-90">›</span>
+                  Tidigare under terminen ({past.length})
+                </span>
+                <span className="text-xs font-normal" style={{ color: "var(--text-light)" }}>
+                  Visa tidigare
+                </span>
+              </summary>
+              <div
+                className="flex flex-col gap-3 p-5 border-t opacity-90"
+                style={{ borderColor: "var(--border)" }}
+              >
+                {past.map((event) => (
+                  <EventItem key={event.id} activity={event} compact href={null} />
+                ))}
               </div>
-            ))
+            </details>
           )}
         </div>
       </section>

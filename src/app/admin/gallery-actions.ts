@@ -48,6 +48,8 @@ export async function uploadImage(
 
   revalidateTag("gallery", "max");
   revalidatePath("/admin");
+  revalidatePath("/admin/bilder");
+  revalidatePath("/bilder");
   return null;
 }
 
@@ -73,6 +75,8 @@ export async function deleteImage(id: string, _formData: FormData) {
 
   revalidateTag("gallery", "max");
   revalidatePath("/admin");
+  revalidatePath("/admin/bilder");
+  revalidatePath("/bilder");
 }
 
 export async function updateCategoryOrder(orderedCleanCategories: string[]) {
@@ -102,5 +106,6 @@ export async function updateCategoryOrder(orderedCleanCategories: string[]) {
 
   revalidateTag("gallery", "max");
   revalidatePath("/admin");
+  revalidatePath("/admin/bilder");
   revalidatePath("/bilder");
 }

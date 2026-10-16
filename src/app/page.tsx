@@ -1,8 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight, CalendarDays, BookOpen, Camera, Scale } from "lucide-react";
+import { ChevronRight, CalendarDays, BookOpen, Camera } from "lucide-react";
+import EventItem from "@/components/EventItem";
+import SectionTitle from "@/components/SectionTitle";
+import { getUpcomingActivities } from "@/lib/activities";
 
-export default function Home() {
+export default async function Home() {
+  const upcomingActivities = await getUpcomingActivities(3);
+
   return (
     <div style={{ backgroundColor: "var(--bg)" }}>
       {/* Hero */}
@@ -121,8 +126,42 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Ur kalendariet: kommande aktiviteter */}
+      <section
+        className="py-20 sm:py-24 px-6 border-b"
+        style={{ borderColor: "var(--border)", backgroundColor: "var(--bg)" }}
+      >
+        <div className="max-w-5xl mx-auto">
+          <SectionTitle
+            eyebrow="Kommande aktiviteter"
+            title="Ur kalendariet"
+            href="/kalender"
+            link="Kalendariet"
+          />
+          {upcomingActivities.length > 0 ? (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {upcomingActivities.map((e) => (
+                <EventItem
+                  key={e.id}
+                  activity={e}
+                  compact
+                  href={`/kalender#activity-${e.id}`}
+                />
+              ))}
+            </div>
+          ) : (
+            <p
+              className="max-w-xl text-base italic"
+              style={{ fontFamily: "'Lora', serif", color: "var(--text-mid)" }}
+            >
+              Inga datum är satta just nu. Nya aktiviteter och sittningar läggs upp här så snart de är bestämda.
+            </p>
+          )}
+        </div>
+      </section>
+
       {/* Vår historia */}
-      <section className="py-24 px-6 border-y" style={{ borderColor: "var(--border)" }}>
+      <section className="py-24 px-6 border-b" style={{ borderColor: "var(--border)" }}>
         <div className="max-w-4xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-12">
           <Image

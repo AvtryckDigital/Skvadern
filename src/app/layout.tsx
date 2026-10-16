@@ -3,7 +3,10 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://skvadern.net";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Skvaderns Hembygdsförening",
   description: "En studentförening vid Norrlands nation i Uppsala, grundad 1950.",
 };

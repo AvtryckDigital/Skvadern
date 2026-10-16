@@ -42,6 +42,8 @@ export default function Footer() {
                 { href: "/evenemang", label: "Evenemang" },
                 { href: "/historia", label: "Historia" },
                 { href: "/bilder", label: "Bilder" },
+                { href: "/kalender", label: "Kalendarium" },
+                { href: "/sangbok", label: "Sångbok" },
               ].map((link) => (
                 <li key={link.href}>
                   <Link

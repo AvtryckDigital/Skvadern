@@ -32,6 +32,9 @@ export async function addActivity(formData: FormData) {
 
   revalidateTag("activities", "max");
   revalidatePath("/admin");
+  revalidatePath("/admin/evenemang");
+  revalidatePath("/");
+  revalidatePath("/kalender");
   return { success: true };
 }
 
@@ -71,6 +74,9 @@ export async function editActivity(id: string, formData: FormData) {
 
   revalidateTag("activities", "max");
   revalidatePath("/admin");
+  revalidatePath("/admin/evenemang");
+  revalidatePath("/");
+  revalidatePath("/kalender");
   return { success: true };
 }
 
@@ -86,4 +92,7 @@ export async function deleteActivity(id: string, _formData: FormData) {
 
   revalidateTag("activities", "max");
   revalidatePath("/admin");
+  revalidatePath("/admin/evenemang");
+  revalidatePath("/");
+  revalidatePath("/kalender");
 }

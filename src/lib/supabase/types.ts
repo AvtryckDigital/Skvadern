@@ -15,3 +15,16 @@ export type GalleryImage = {
   category?: string | null;
   created_at: string;
 };
+
+export type Song = {
+  id: string;
+  slug: string;
+  title: string;
+  number: number | null;
+  category: string | null;
+  melody: string | null;
+  lyrics: string;
+  notes: string | null;
+  created_at?: string;
+};
+
